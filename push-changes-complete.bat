@@ -130,12 +130,7 @@ echo Committing changes with message: "%COMMIT_MESSAGE%"
 "%GIT_PATH%" commit -m "%COMMIT_MESSAGE%"
 if %ERRORLEVEL% NEQ 0 (
     echo Failed to commit changes. This might be because there are no changes to commit.
-    echo If you've already committed your changes, you can try pushing them.
-    set /p CONTINUE=Do you want to continue and try pushing? (Y/N):
-    if /i not "%CONTINUE%"=="Y" (
-        pause
-        exit /b 1
-    )
+    echo Continuing to push anyway in case there are already committed changes...
 )
 
 REM Push changes
