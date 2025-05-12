@@ -682,7 +682,7 @@
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding-bottom: 8px; /* Reduced padding */
+          padding-bottom: 0; /* Removed bottom padding */
         }
 
         nav {
@@ -757,7 +757,7 @@
         }
 
         main {
-          padding-top: 100px; /* Adjusted space for header on small devices */
+          padding-top: 90px; /* Reduced space for header on small devices */
           padding-left: 10px;
           padding-right: 10px;
         }
@@ -771,6 +771,7 @@
         nav {
           gap: 6px; /* Reduced gap */
           margin-top: 5px; /* Reduced top margin */
+          margin-bottom: 0; /* No bottom margin */
           flex-direction: row;
           flex-wrap: wrap;
           justify-content: center;
@@ -974,15 +975,22 @@
       let lastScroll = 0;
       const header = document.getElementById('fade-header');
 
-      window.addEventListener('scroll', function() {
-        const currentScroll = window.pageYOffset;
+      function handleScroll() {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
         if (currentScroll > 60) {
           header.classList.add('faded');
         } else {
           header.classList.remove('faded');
         }
         lastScroll = currentScroll;
-      });
+      }
+
+      // Add scroll event listener
+      window.addEventListener('scroll', handleScroll);
+
+      // Also trigger on touch events for mobile
+      window.addEventListener('touchmove', handleScroll);
+      window.addEventListener('touchend', handleScroll);
 
       // Set animation order for nav links
       document.querySelectorAll('nav a').forEach((link, index) => {
