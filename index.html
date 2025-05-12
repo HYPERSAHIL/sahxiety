@@ -54,7 +54,7 @@
         top: 0;
         left: 0;
         right: 0;
-        z-index: 10;
+        z-index: 100; /* Higher z-index to ensure it's above everything */
         padding: 5px 0 0 0; /* Minimal top padding */
         transform: translateY(0);
         height: auto;
@@ -135,7 +135,7 @@
         max-width: 680px;
         width: 100%;
         margin: 0 auto;
-        padding: 70px 32px 48px 32px; /* Increased top padding to account for header */
+        padding: 90px 32px 48px 32px; /* Further increased top padding to account for header */
         animation: fadeIn 0.5s ease-out; /* Added fade-in animation */
         position: relative; /* Ensure proper stacking */
         z-index: 1; /* Lower than header */
@@ -168,6 +168,7 @@
         color: inherit;
         margin-top: 3em;
         letter-spacing: 1px;
+        text-align: left; /* Ensure left alignment */
       }
       .newsletter {
         background: rgba(255,255,255,0.07);
@@ -667,7 +668,7 @@
         }
 
         main {
-          padding: 60px 16px 36px 16px; /* Adjusted top padding */
+          padding: 100px 16px 36px 16px; /* Increased top padding */
           margin-top: 0; /* No margin, using padding instead */
           width: 100%;
           box-sizing: border-box;
@@ -682,11 +683,11 @@
         }
 
         .site-title {
-          font-size: 1.6em;
+          font-size: 2em; /* Increased font size */
           padding: 3px 0 0 0; /* Minimal padding */
           text-align: center;
           width: 100%;
-          line-height: 1; /* Tighter line height */
+          line-height: 1.1; /* Slightly increased line height */
           margin: 0;
         }
 
@@ -700,23 +701,23 @@
         }
 
         nav {
-          gap: 10px; /* Further reduced gap */
-          font-size: 1.05em;
+          gap: 12px; /* Increased gap */
+          font-size: 1.2em; /* Increased font size */
           flex-wrap: wrap;
           justify-content: center;
           padding: 0 5px;
-          margin: 2px 0 2px 0; /* Minimal margins */
+          margin: 5px 0 5px 0; /* Slightly increased margins */
           width: 100%;
-          line-height: 1; /* Reduce line height */
+          line-height: 1.2; /* Slightly increased line height */
         }
 
         nav a {
-          padding: 5px 7px; /* Reduced padding */
+          padding: 5px 10px; /* Increased horizontal padding */
           margin: 0; /* No margins */
           border-radius: 4px;
           background: rgba(138, 43, 226, 0.05);
           display: inline-block; /* Ensure proper sizing */
-          line-height: 1.2; /* Tighter line height */
+          line-height: 1.3; /* Increased line height */
         }
 
         .newsletter {
@@ -762,8 +763,8 @@
         }
 
         .signature {
-          text-align: center;
-          margin: 25px auto; /* Reduced margin */
+          text-align: left; /* Left alignment */
+          margin: 25px 0; /* Left-aligned margin */
         }
       }
 
@@ -774,13 +775,13 @@
         }
 
         main {
-          padding-top: 50px; /* Minimal space for header on small devices */
+          padding-top: 80px; /* Increased space for header on small devices */
           padding-left: 10px;
           padding-right: 10px;
         }
 
         .site-title {
-          font-size: 1.4em; /* Smaller font */
+          font-size: 1.8em; /* Larger font for better visibility */
           padding: 2px 0 0 0; /* Minimal padding */
           margin: 0;
         }
@@ -795,12 +796,12 @@
         }
 
         nav a {
-          font-size: 0.9em;
-          padding: 3px 5px; /* Minimal padding */
+          font-size: 1.1em; /* Increased font size */
+          padding: 4px 8px; /* Slightly increased padding for better touch targets */
           margin: 0; /* No margin */
           border-radius: 3px;
           background: rgba(138, 43, 226, 0.05);
-          line-height: 1.1; /* Even tighter line height */
+          line-height: 1.2; /* Slightly increased line height */
         }
 
         h1 {
