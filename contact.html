@@ -131,13 +131,14 @@
       max-width: 600px;
       width: 100%;
       margin: 0 auto;
-      padding: 120px 32px 48px 32px; /* Increased top padding for fixed header */
+      padding: 100px 32px 48px 32px; /* Reduced top padding */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 60vh;
-      gap: 25px;
+      gap: 20px; /* Reduced gap */
+      animation: fadeIn 0.5s ease-out; /* Added fade-in animation */
     }
     .contact-section {
       display: flex;
@@ -553,8 +554,8 @@
       }
 
       main {
-        padding: 120px 16px 36px 16px; /* Increased top padding for fixed header */
-        gap: 25px;
+        padding: 80px 16px 36px 16px; /* Reduced top padding for fixed header */
+        gap: 20px; /* Reduced gap */
         width: 100%;
         box-sizing: border-box;
       }
@@ -563,7 +564,7 @@
       .fade-header {
         background: rgba(0, 0, 0, 0.8);
         backdrop-filter: blur(5px);
-        padding: 10px 0;
+        padding: 8px 0; /* Reduced padding */
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -571,24 +572,25 @@
 
       .site-title {
         font-size: 1.6em;
-        padding-top: 18px;
+        padding-top: 12px; /* Reduced padding */
+        padding-bottom: 5px; /* Added bottom padding */
         text-align: center;
         width: 100%;
       }
 
       nav {
-        gap: 20px;
+        gap: 15px; /* Reduced gap */
         font-size: 1.05em;
         flex-wrap: wrap;
         justify-content: center;
         padding: 0 10px;
-        margin-bottom: 5px;
+        margin-bottom: 0; /* Removed bottom margin */
         width: 100%;
       }
 
       nav a {
-        padding: 8px 0;
-        margin-bottom: 5px;
+        padding: 6px 0; /* Reduced padding */
+        margin-bottom: 0; /* Removed bottom margin */
       }
 
       .contact-section {
@@ -666,19 +668,21 @@
       }
 
       main {
-        padding-top: 120px; /* More space for header on small devices */
-        gap: 15px;
+        padding-top: 80px; /* Reduced space for header on small devices */
+        gap: 12px; /* Reduced gap */
         padding-left: 10px;
         padding-right: 10px;
       }
 
       .site-title {
         font-size: 1.5em;
+        padding-top: 10px;
+        padding-bottom: 4px;
       }
 
       nav {
-        gap: 8px;
-        margin-top: 10px;
+        gap: 6px; /* Reduced gap */
+        margin-top: 5px; /* Reduced top margin */
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
@@ -687,8 +691,8 @@
 
       nav a {
         font-size: 0.9em;
-        padding: 5px 6px;
-        margin: 2px;
+        padding: 4px 6px; /* Reduced padding */
+        margin: 1px; /* Reduced margin */
         border-radius: 4px;
         background: rgba(138, 43, 226, 0.05);
       }

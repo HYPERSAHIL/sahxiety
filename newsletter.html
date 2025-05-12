@@ -78,10 +78,11 @@
     main {
       max-width: 680px;
       margin: 0 auto;
-      padding: 120px 16px 48px 16px; /* Increased top padding for fixed header */
+      padding: 100px 16px 48px 16px; /* Reduced top padding */
       display: flex;
       flex-direction: column;
       align-items: center;
+      animation: fadeIn 0.5s ease-out; /* Added fade-in animation */
     }
     .newsletter {
       background: rgba(255,255,255,0.07);
@@ -375,14 +376,14 @@
       }
 
       main {
-        padding: 120px 16px 36px 16px; /* Increased top padding for fixed header */
+        padding: 80px 16px 36px 16px; /* Reduced top padding for fixed header */
         width: 100%;
         box-sizing: border-box;
       }
 
       .newsletter {
-        padding: 24px 16px;
-        margin-top: 24px;
+        padding: 20px 16px; /* Reduced padding */
+        margin-top: 15px; /* Reduced top margin */
         width: 100%;
         max-width: 100%;
         box-sizing: border-box;
@@ -463,7 +464,7 @@
       }
 
       main {
-        padding-top: 120px; /* More space for header on small devices */
+        padding-top: 80px; /* Reduced space for header on small devices */
         padding-left: 10px;
         padding-right: 10px;
       }

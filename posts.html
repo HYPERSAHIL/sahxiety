@@ -267,7 +267,8 @@
       max-width: 680px;
       width: 100%;
       margin: 0 auto;
-      padding: 120px 32px 48px 32px; /* Increased top padding to account for fixed header */
+      padding: 100px 32px 48px 32px; /* Reduced top padding */
+      animation: fadeIn 0.5s ease-out; /* Added fade-in animation */
     }
     h1 {
       font-family: 'Playfair Display', serif;
@@ -602,8 +603,8 @@
       }
 
       main {
-        padding: 36px 16px 36px 16px;
-        margin-top: 160px; /* Increased space for fixed header and clock */
+        padding: 20px 16px 36px 16px; /* Reduced top padding */
+        margin-top: 130px; /* Reduced space for fixed header and clock */
         width: 100%;
         box-sizing: border-box;
       }
@@ -611,14 +612,15 @@
       h1 {
         font-size: 1.5em;
         line-height: 1.4;
-        margin-bottom: 1.2em;
+        margin-bottom: 0.8em; /* Reduced bottom margin */
         margin-top: 0;
         text-align: center;
       }
 
       .site-title {
         font-size: 1.6em;
-        padding-top: 18px;
+        padding-top: 12px; /* Reduced padding */
+        padding-bottom: 5px; /* Added bottom padding */
         text-align: center;
         width: 100%;
       }
@@ -627,12 +629,12 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding-bottom: 15px;
+        padding-bottom: 8px; /* Reduced padding */
       }
 
       .today-date-container {
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: 5px; /* Reduced top margin */
+        margin-bottom: 5px; /* Reduced bottom margin */
         width: 100%;
         display: flex;
         justify-content: center;
@@ -641,12 +643,12 @@
 
       .today-date {
         font-size: 0.9em;
-        margin-bottom: 10px;
+        margin-bottom: 5px; /* Reduced bottom margin */
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: normal; /* Allow text to wrap */
-        padding: 8px 12px;
+        padding: 6px 10px; /* Reduced padding */
         text-align: center;
       }
 
@@ -721,18 +723,20 @@
       }
 
       main {
-        padding-top: 170px; /* More space for header on small devices */
+        padding-top: 110px; /* Reduced space for header on small devices */
         padding-left: 10px;
         padding-right: 10px;
       }
 
       .site-title {
         font-size: 1.5em;
+        padding-top: 10px;
+        padding-bottom: 4px;
       }
 
       nav {
-        gap: 8px;
-        margin-top: 10px;
+        gap: 6px; /* Reduced gap */
+        margin-top: 5px; /* Reduced top margin */
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
@@ -741,15 +745,15 @@
 
       nav a {
         font-size: 0.9em;
-        padding: 5px 6px;
-        margin: 2px;
+        padding: 4px 6px; /* Reduced padding */
+        margin: 1px; /* Reduced margin */
         border-radius: 4px;
         background: rgba(138, 43, 226, 0.05);
       }
 
       h1 {
         font-size: 1.3em;
-        margin-bottom: 15px;
+        margin-bottom: 10px; /* Reduced bottom margin */
       }
 
       .posts-list a {
@@ -757,8 +761,8 @@
       }
 
       .posts-list li {
-        padding: 12px;
-        margin-bottom: 15px;
+        padding: 10px; /* Reduced padding */
+        margin-bottom: 12px; /* Reduced bottom margin */
       }
 
       .clock {
