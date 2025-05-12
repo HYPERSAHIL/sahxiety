@@ -66,6 +66,7 @@
         transform: translateY(-100%); /* Move it completely off-screen */
         pointer-events: none;
         max-height: 0; /* Collapse height */
+        visibility: hidden; /* Ensure it's completely hidden */
       }
       .site-title {
         font-family: 'Playfair Display', serif;
@@ -139,6 +140,7 @@
         animation: fadeIn 0.5s ease-out; /* Added fade-in animation */
         position: relative; /* Ensure proper stacking */
         z-index: 1; /* Lower than header */
+        transition: padding 0.3s ease, margin 0.3s ease; /* Smooth transition for padding/margin changes */
       }
       h1, h2, h3, h4 {
         font-family: 'Playfair Display', serif;
@@ -775,33 +777,46 @@
         }
 
         main {
-          padding-top: 80px; /* Increased space for header on small devices */
+          padding-top: 0; /* Start content from the top when header is hidden */
           padding-left: 10px;
           padding-right: 10px;
+          margin-top: 80px; /* Add margin to account for header height */
         }
 
         .site-title {
           font-size: 1.8em; /* Larger font for better visibility */
           padding: 2px 0 0 0; /* Minimal padding */
           margin: 0;
+          text-align: left; /* Align to the left as requested */
+          padding-left: 10px; /* Add some padding on the left */
+        }
+
+        .fade-header {
+          max-height: 90px; /* Increased max height to fit all nav items */
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start; /* Align items to the left */
         }
 
         nav {
-          gap: 5px; /* Further reduced gap */
-          margin: 3px 0 3px 0; /* Minimal margins */
+          gap: 8px; /* Increased gap for better spacing */
+          margin: 5px 0 5px 0; /* Slightly increased margins */
           flex-direction: row;
           flex-wrap: wrap;
-          justify-content: center;
-          padding: 0;
+          justify-content: flex-start; /* Align to the left */
+          padding: 0 10px; /* Add padding on the sides */
+          width: 100%;
+          display: flex;
         }
 
         nav a {
           font-size: 1.1em; /* Increased font size */
-          padding: 4px 8px; /* Slightly increased padding for better touch targets */
-          margin: 0; /* No margin */
-          border-radius: 3px;
+          padding: 5px 10px; /* Increased padding for better touch targets */
+          margin: 2px; /* Small margin between items */
+          border-radius: 4px;
           background: rgba(138, 43, 226, 0.05);
           line-height: 1.2; /* Slightly increased line height */
+          display: inline-block; /* Ensure proper display */
         }
 
         h1 {
@@ -989,28 +1004,41 @@
 
       updateIcons();
 
-      // Header hide/show on scroll - completely rewritten for mobile
+      // Enhanced header hide/show on scroll with improved animation
       const header = document.getElementById('fade-header');
       let lastScrollTop = 0;
       let scrollDirection = 'up';
       let ticking = false;
+      let scrollThreshold = 10; // Minimum scroll before hiding header
+      let scrollTimer = null;
 
       function handleHeaderVisibility() {
         // Get current scroll position from all possible sources
         const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
 
-        // Determine scroll direction
-        if (scrollTop > lastScrollTop && scrollTop > 10) {
+        // Determine scroll direction with improved threshold
+        if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
           scrollDirection = 'down';
-        } else {
+        } else if (scrollTop < lastScrollTop) {
           scrollDirection = 'up';
         }
 
         // Hide header when scrolling down, show when scrolling up
         if (scrollDirection === 'down') {
           header.classList.add('faded');
+
+          // Adjust main content padding when header is hidden
+          if (window.innerWidth <= 480) {
+            document.querySelector('main').style.paddingTop = '0';
+          }
         } else {
           header.classList.remove('faded');
+
+          // Restore main content padding when header is visible
+          if (window.innerWidth <= 480) {
+            document.querySelector('main').style.paddingTop = '0';
+            document.querySelector('main').style.marginTop = '80px';
+          }
         }
 
         lastScrollTop = scrollTop;
@@ -1023,6 +1051,18 @@
           requestAnimationFrame(handleHeaderVisibility);
           ticking = true;
         }
+
+        // Clear any existing timer
+        if (scrollTimer) {
+          clearTimeout(scrollTimer);
+        }
+
+        // Set a timer to show the header after scrolling stops
+        scrollTimer = setTimeout(() => {
+          if (window.scrollY < 10) {
+            header.classList.remove('faded');
+          }
+        }, 1500);
       }
 
       // Add multiple event listeners for maximum compatibility
@@ -1033,6 +1073,11 @@
       // Force header visibility on page load
       window.addEventListener('load', function() {
         header.classList.remove('faded');
+
+        // Ensure content is properly positioned on page load
+        if (window.innerWidth <= 480) {
+          document.querySelector('main').style.marginTop = '80px';
+        }
       });
 
       // Check header visibility on page load

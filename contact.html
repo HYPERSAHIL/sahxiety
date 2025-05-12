@@ -51,20 +51,28 @@
     }
     .fade-header {
       width: 100%;
-      background: transparent;
-      transition: opacity 0.4s;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
       opacity: 1;
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      z-index: 10;
-      padding: 20px 0;
+      z-index: 100;
+      padding: 5px 0 0 0;
       text-align: center;
+      transform: translateY(0);
+      height: auto;
+      max-height: 150px;
+      overflow: hidden;
     }
     .fade-header.faded {
-      opacity: 0.7;
+      opacity: 0; /* Completely invisible */
+      transform: translateY(-100%); /* Move it completely off-screen */
       pointer-events: none;
+      max-height: 0; /* Collapse height */
+      visibility: hidden; /* Ensure it's completely hidden */
     }
     .site-title {
       font-family: 'Playfair Display', serif;
@@ -139,6 +147,7 @@
       min-height: 60vh;
       gap: 20px; /* Reduced gap */
       animation: fadeIn 0.5s ease-out; /* Added fade-in animation */
+      transition: padding 0.3s ease, margin 0.3s ease; /* Smooth transition for padding/margin changes */
     }
     .contact-section {
       display: flex;
@@ -667,33 +676,48 @@
       }
 
       main {
-        padding-top: 100px; /* Adjusted space for header on small devices */
-        gap: 10px; /* Further reduced gap */
+        padding-top: 0; /* Start content from the top when header is hidden */
         padding-left: 10px;
         padding-right: 10px;
+        margin-top: 80px; /* Add margin to account for header height */
+        transition: padding 0.3s ease, margin 0.3s ease; /* Smooth transition */
+        gap: 10px; /* Further reduced gap */
       }
 
       .site-title {
         font-size: 1.5em;
-        padding-top: 10px;
-        padding-bottom: 4px;
+        padding: 2px 0 0 0;
+        margin: 0;
+        text-align: left; /* Align to the left as requested */
+        padding-left: 10px; /* Add some padding on the left */
+      }
+
+      .fade-header {
+        max-height: 90px; /* Increased max height to fit all nav items */
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* Align items to the left */
       }
 
       nav {
-        gap: 6px; /* Reduced gap */
-        margin-top: 5px; /* Reduced top margin */
+        gap: 8px; /* Increased gap for better spacing */
+        margin: 5px 0 5px 0; /* Slightly increased margins */
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
-        padding: 0 5px;
+        justify-content: flex-start; /* Align to the left */
+        padding: 0 10px; /* Add padding on the sides */
+        width: 100%;
+        display: flex;
       }
 
       nav a {
-        font-size: 0.9em;
-        padding: 4px 6px; /* Reduced padding */
-        margin: 1px; /* Reduced margin */
+        font-size: 1.1em; /* Increased font size */
+        padding: 5px 10px; /* Increased padding for better touch targets */
+        margin: 2px; /* Small margin between items */
         border-radius: 4px;
         background: rgba(138, 43, 226, 0.05);
+        line-height: 1.2; /* Slightly increased line height */
+        display: inline-block; /* Ensure proper display */
       }
 
       .mail-label {
@@ -863,19 +887,84 @@
 
     updateIcons();
 
-    // Header fade on scroll
-    let lastScroll = 0;
+    // Enhanced header hide/show on scroll with improved animation
     const header = document.getElementById('fade-header');
+    let lastScrollTop = 0;
+    let scrollDirection = 'up';
+    let ticking = false;
+    let scrollThreshold = 10; // Minimum scroll before hiding header
+    let scrollTimer = null;
 
-    window.addEventListener('scroll', function() {
-      const currentScroll = window.pageYOffset;
-      if (currentScroll > 60) {
+    function handleHeaderVisibility() {
+      // Get current scroll position from all possible sources
+      const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+
+      // Determine scroll direction with improved threshold
+      if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+        scrollDirection = 'down';
+      } else if (scrollTop < lastScrollTop) {
+        scrollDirection = 'up';
+      }
+
+      // Hide header when scrolling down, show when scrolling up
+      if (scrollDirection === 'down') {
         header.classList.add('faded');
+
+        // Adjust main content padding when header is hidden
+        if (window.innerWidth <= 480) {
+          document.querySelector('main').style.paddingTop = '0';
+        }
       } else {
         header.classList.remove('faded');
+
+        // Restore main content padding when header is visible
+        if (window.innerWidth <= 480) {
+          document.querySelector('main').style.paddingTop = '0';
+          document.querySelector('main').style.marginTop = '80px';
+        }
       }
-      lastScroll = currentScroll;
+
+      lastScrollTop = scrollTop;
+      ticking = false;
+    }
+
+    // Throttle scroll events for better performance
+    function requestHeaderUpdate() {
+      if (!ticking) {
+        requestAnimationFrame(handleHeaderVisibility);
+        ticking = true;
+      }
+
+      // Clear any existing timer
+      if (scrollTimer) {
+        clearTimeout(scrollTimer);
+      }
+
+      // Set a timer to show the header after scrolling stops
+      scrollTimer = setTimeout(() => {
+        if (window.scrollY < 10) {
+          header.classList.remove('faded');
+        }
+      }, 1500);
+    }
+
+    // Add multiple event listeners for maximum compatibility
+    ['scroll', 'touchmove', 'touchstart', 'touchend'].forEach(eventType => {
+      window.addEventListener(eventType, requestHeaderUpdate, { passive: true });
     });
+
+    // Force header visibility on page load
+    window.addEventListener('load', function() {
+      header.classList.remove('faded');
+
+      // Ensure content is properly positioned on page load
+      if (window.innerWidth <= 480) {
+        document.querySelector('main').style.marginTop = '80px';
+      }
+    });
+
+    // Check header visibility on page load
+    handleHeaderVisibility();
 
     // Set animation order for nav links
     document.querySelectorAll('nav a').forEach((link, index) => {
