@@ -345,6 +345,8 @@
       .site-title {
         font-size: 1.6em;
         padding-top: 18px;
+        text-align: center;
+        width: 100%;
       }
 
       /* Ensure header doesn't overlap content */
@@ -352,6 +354,9 @@
         background: rgba(0, 0, 0, 0.8);
         backdrop-filter: blur(5px);
         padding: 10px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
       nav {
@@ -361,6 +366,7 @@
         justify-content: center;
         padding: 0 10px;
         margin-bottom: 5px;
+        width: 100%;
       }
 
       nav a {
@@ -370,6 +376,8 @@
 
       main {
         padding: 120px 16px 36px 16px; /* Increased top padding for fixed header */
+        width: 100%;
+        box-sizing: border-box;
       }
 
       .newsletter {
@@ -377,10 +385,14 @@
         margin-top: 24px;
         width: 100%;
         max-width: 100%;
+        box-sizing: border-box;
       }
 
       #newsletter-form {
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
       #newsletter-form input[type="text"],
@@ -390,6 +402,7 @@
         padding: 14px 16px;
         font-size: 1.05em;
         margin-bottom: 15px;
+        box-sizing: border-box;
       }
 
       #newsletter-form button {
@@ -401,6 +414,12 @@
 
       .newsletter-desc {
         padding: 0 10px;
+        text-align: center;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 1.5em;
       }
     }
 
@@ -415,17 +434,20 @@
       }
 
       nav {
-        gap: 12px;
-        margin-top: 12px;
+        gap: 8px;
+        margin-top: 10px;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
+        padding: 0 5px;
       }
 
       nav a {
-        font-size: 0.95em;
-        padding: 6px 8px;
+        font-size: 0.9em;
+        padding: 5px 6px;
         margin: 2px;
+        border-radius: 4px;
+        background: rgba(138, 43, 226, 0.05);
       }
 
       .newsletter h3 {
@@ -441,7 +463,25 @@
       }
 
       main {
-        padding-top: 100px; /* More space for header on small devices */
+        padding-top: 120px; /* More space for header on small devices */
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .newsletter {
+        padding: 20px 12px;
+      }
+
+      #newsletter-form input[type="text"],
+      #newsletter-form input[type="email"] {
+        padding: 12px 14px;
+        font-size: 1em;
+      }
+
+      /* Adjust footer for small screens */
+      footer {
+        padding: 15px 10px;
+        font-size: 0.9em;
       }
     }
     footer {

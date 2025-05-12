@@ -651,17 +651,32 @@
 
         main {
           padding: 36px 16px 36px 16px;
-          margin-top: 80px; /* Add space for fixed header */
+          margin-top: 100px; /* Add space for fixed header */
+          width: 100%;
+          box-sizing: border-box;
         }
 
         h1 {
           font-size: 1.5em;
           line-height: 1.4;
+          text-align: center;
         }
 
         .site-title {
           font-size: 1.6em;
           padding-top: 18px;
+          text-align: center;
+          width: 100%;
+        }
+
+        .fade-header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-bottom: 15px;
+          background: rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(5px);
+          padding-top: 10px;
         }
 
         nav {
@@ -671,6 +686,7 @@
           justify-content: center;
           padding: 0 10px;
           margin-bottom: 10px;
+          width: 100%;
         }
 
         nav a {
@@ -682,20 +698,31 @@
           padding: 24px 16px;
           margin-top: 36px;
           width: 100%; /* Ensure full width on mobile */
+          box-sizing: border-box;
+        }
+
+        #newsletter-form {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
         }
 
         #newsletter-form input[type="text"],
         #newsletter-form input[type="email"] {
+          width: 100%;
           max-width: 100%;
           padding: 14px 16px;
           font-size: 1.05em;
+          margin-bottom: 15px;
+          box-sizing: border-box;
         }
 
         #newsletter-form button {
           padding: 14px 32px;
           font-size: 1.15em;
           width: 100%;
-          max-width: 320px;
+          max-width: 100%;
         }
 
         #theme-toggle {
@@ -704,11 +731,14 @@
           font-size: 1.6em;
         }
 
-        /* Ensure header doesn't overlap content */
-        .fade-header {
-          background: rgba(0, 0, 0, 0.8);
-          backdrop-filter: blur(5px);
-          padding: 10px 0;
+        .recent-posts {
+          padding: 20px 15px;
+          margin: 30px 0;
+        }
+
+        .signature {
+          text-align: center;
+          margin: 30px auto;
         }
       }
 
@@ -719,7 +749,9 @@
         }
 
         main {
-          padding-top: 100px; /* More space for header on small devices */
+          padding-top: 120px; /* More space for header on small devices */
+          padding-left: 10px;
+          padding-right: 10px;
         }
 
         .site-title {
@@ -727,31 +759,57 @@
         }
 
         nav {
-          gap: 12px;
-          margin-top: 12px;
+          gap: 8px;
+          margin-top: 10px;
           flex-direction: row;
           flex-wrap: wrap;
           justify-content: center;
+          padding: 0 5px;
         }
 
         nav a {
-          font-size: 0.95em;
-          padding: 6px 8px;
+          font-size: 0.9em;
+          padding: 5px 6px;
           margin: 2px;
+          border-radius: 4px;
+          background: rgba(138, 43, 226, 0.05);
         }
 
         h1 {
-          font-size: 1.4em;
+          font-size: 1.3em;
           margin-top: 0;
+          margin-bottom: 15px;
         }
 
         .newsletter h3 {
           font-size: 1.3em;
+          white-space: normal; /* Allow wrapping for small screens */
+          border-right: none; /* Remove typing cursor on mobile */
+          animation: fadeIn 300ms ease-out;
         }
 
         #newsletter-form button {
           font-size: 1.1em;
           padding: 12px 24px;
+        }
+
+        .recent-posts {
+          padding: 15px 10px;
+        }
+
+        .posts-list li {
+          padding: 12px;
+          margin-bottom: 15px;
+        }
+
+        .posts-list a {
+          font-size: 1em;
+        }
+
+        /* Adjust footer for small screens */
+        footer {
+          padding: 15px 10px;
+          font-size: 0.9em;
         }
       }
       footer {

@@ -603,7 +603,9 @@
 
       main {
         padding: 36px 16px 36px 16px;
-        margin-top: 140px; /* Add space for fixed header and clock */
+        margin-top: 160px; /* Increased space for fixed header and clock */
+        width: 100%;
+        box-sizing: border-box;
       }
 
       h1 {
@@ -611,11 +613,21 @@
         line-height: 1.4;
         margin-bottom: 1.2em;
         margin-top: 0;
+        text-align: center;
       }
 
       .site-title {
         font-size: 1.6em;
         padding-top: 18px;
+        text-align: center;
+        width: 100%;
+      }
+
+      .fade-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 15px;
       }
 
       .today-date-container {
@@ -624,6 +636,7 @@
         width: 100%;
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
       }
 
       .today-date {
@@ -632,23 +645,30 @@
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: normal; /* Allow text to wrap */
+        padding: 8px 12px;
+        text-align: center;
       }
 
       .clock {
-        width: 60px;
-        height: 60px;
-        margin-right: 10px;
+        width: 45px;
+        height: 45px;
+        margin-right: 8px;
+        border-width: 1px;
       }
 
       .clock-hour {
-        height: 16px;
-        margin-top: -16px;
+        height: 12px;
+        margin-top: -12px;
+        width: 2px;
+        margin-left: -1px;
       }
 
       .clock-minute {
-        height: 22px;
-        margin-top: -22px;
+        height: 16px;
+        margin-top: -16px;
+        width: 1px;
+        margin-left: -0.5px;
       }
 
       /* Ensure header doesn't overlap content */
@@ -701,7 +721,9 @@
       }
 
       main {
-        padding-top: 150px; /* More space for header on small devices */
+        padding-top: 170px; /* More space for header on small devices */
+        padding-left: 10px;
+        padding-right: 10px;
       }
 
       .site-title {
@@ -709,44 +731,71 @@
       }
 
       nav {
-        gap: 12px;
-        margin-top: 12px;
+        gap: 8px;
+        margin-top: 10px;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
+        padding: 0 5px;
       }
 
       nav a {
-        font-size: 0.95em;
-        padding: 6px 8px;
+        font-size: 0.9em;
+        padding: 5px 6px;
         margin: 2px;
+        border-radius: 4px;
+        background: rgba(138, 43, 226, 0.05);
       }
 
       h1 {
-        font-size: 1.4em;
+        font-size: 1.3em;
+        margin-bottom: 15px;
       }
 
       .posts-list a {
-        font-size: 1.15em;
+        font-size: 1.1em;
+      }
+
+      .posts-list li {
+        padding: 12px;
+        margin-bottom: 15px;
       }
 
       .clock {
-        width: 50px;
-        height: 50px;
+        width: 35px;
+        height: 35px;
+        border-width: 1px;
       }
 
       .clock-hour {
-        height: 14px;
-        margin-top: -14px;
+        height: 10px;
+        margin-top: -10px;
+        width: 1.5px;
+        margin-left: -0.75px;
       }
 
       .clock-minute {
-        height: 18px;
-        margin-top: -18px;
+        height: 14px;
+        margin-top: -14px;
+        width: 1px;
+        margin-left: -0.5px;
       }
 
       .today-date {
-        font-size: 0.85em;
+        font-size: 0.8em;
+        padding: 6px 10px;
+        min-width: auto;
+      }
+
+      .today-date-container {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      /* Adjust footer for small screens */
+      footer {
+        padding: 15px 10px;
+        font-size: 0.9em;
       }
     }
   </style>
@@ -914,13 +963,18 @@
         number.style.width = '100%';
         number.style.height = '100%';
         number.style.textAlign = 'center';
-        number.style.fontSize = '12px';
+        // Get clock width for responsive sizing
+        const clockWidth = clock.offsetWidth || 75;
+
+        // Responsive font size based on clock width
+        const fontSize = Math.max(8, Math.floor(clockWidth / 8)); // Min 8px, scales with clock
+        number.style.fontSize = `${fontSize}px`;
         number.style.fontWeight = 'bold';
         number.style.color = 'var(--accent-color)';
 
-        // Calculate position for each number
+        // Calculate position for each number - responsive radius based on clock size
         const angle = (i * 30) * (Math.PI / 180); // 30 degrees per hour
-        const radius = 28; // Distance from center (increased for larger clock)
+        const radius = clockWidth * 0.35; // Scale radius based on clock size (35% of clock width)
         const x = Math.sin(angle) * radius;
         const y = -Math.cos(angle) * radius;
 
@@ -1074,17 +1128,21 @@
 
           const clockIcon = document.createElement('div');
           clockIcon.className = 'clock';
-          clockIcon.style.width = '20px';
-          clockIcon.style.height = '20px';
-          clockIcon.style.marginRight = '8px';
+          clockIcon.style.width = '16px';
+          clockIcon.style.height = '16px';
+          clockIcon.style.marginRight = '6px';
+          clockIcon.style.display = 'inline-block';
+          clockIcon.style.verticalAlign = 'middle';
+          clockIcon.style.borderWidth = '1px';
 
           // Set background for the small clock
           clockIcon.style.background = 'rgba(138, 43, 226, 0.1)';
 
-          // Add numerical markings (1-12) to the small clock
-          for (let i = 1; i <= 12; i++) {
+          // For small clocks, use simpler markings (just dots at 3, 6, 9, 12)
+          const positions = [3, 6, 9, 12]; // Only show these hour positions
+          for (let i of positions) {
             const angle = (i * 30) * (Math.PI / 180); // 30 degrees per hour
-            const radius = 8; // Distance from center (increased for larger clock)
+            const radius = 5; // Smaller radius for the tiny clock
             const x = Math.sin(angle) * radius;
             const y = -Math.cos(angle) * radius;
 
