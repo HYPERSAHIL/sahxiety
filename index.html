@@ -55,10 +55,10 @@
         left: 0;
         right: 0;
         z-index: 10;
-        padding: 10px 0;
+        padding: 10px 0 0 0; /* Removed bottom padding */
       }
       .fade-header.faded {
-        opacity: 0.7;
+        opacity: 0.3; /* More visible fade effect */
         pointer-events: none;
       }
       .site-title {
@@ -682,24 +682,28 @@
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding-bottom: 0; /* Removed bottom padding */
+          padding: 10px 0 0 0; /* Only top padding, no bottom padding */
+          height: auto; /* Allow natural height */
         }
 
         nav {
-          gap: 15px; /* Reduced gap */
+          gap: 12px; /* Further reduced gap */
           font-size: 1.05em;
           flex-wrap: wrap;
           justify-content: center;
           padding: 0 10px;
-          margin: 5px 0 0 0; /* Adjusted margin */
+          margin: 5px 0 5px 0; /* Added bottom margin to create space between nav and content */
           width: 100%;
+          line-height: 1; /* Reduce line height */
         }
 
         nav a {
-          padding: 6px 8px; /* Added horizontal padding */
-          margin-bottom: 0; /* Removed bottom margin */
+          padding: 5px 7px; /* Reduced padding */
+          margin: 0; /* No margins */
           border-radius: 4px;
           background: rgba(138, 43, 226, 0.05);
+          display: inline-block; /* Ensure proper sizing */
+          line-height: 1.2; /* Tighter line height */
         }
 
         .newsletter {
@@ -757,7 +761,7 @@
         }
 
         main {
-          padding-top: 90px; /* Reduced space for header on small devices */
+          padding-top: 80px; /* Further reduced space for header on small devices */
           padding-left: 10px;
           padding-right: 10px;
         }
@@ -769,21 +773,21 @@
         }
 
         nav {
-          gap: 6px; /* Reduced gap */
-          margin-top: 5px; /* Reduced top margin */
-          margin-bottom: 0; /* No bottom margin */
+          gap: 5px; /* Further reduced gap */
+          margin: 3px 0 3px 0; /* Minimal margins */
           flex-direction: row;
           flex-wrap: wrap;
           justify-content: center;
-          padding: 0 5px;
+          padding: 0;
         }
 
         nav a {
           font-size: 0.9em;
-          padding: 4px 6px; /* Reduced padding */
-          margin: 1px; /* Reduced margin */
-          border-radius: 4px;
+          padding: 3px 5px; /* Minimal padding */
+          margin: 0; /* No margin */
+          border-radius: 3px;
           background: rgba(138, 43, 226, 0.05);
+          line-height: 1.1; /* Even tighter line height */
         }
 
         h1 {
@@ -971,26 +975,42 @@
 
       updateIcons();
 
-      // Header fade on scroll
-      let lastScroll = 0;
+      // Header fade on scroll - completely rewritten for better mobile support
       const header = document.getElementById('fade-header');
+      let lastScrollTop = 0;
+      let ticking = false;
 
-      function handleScroll() {
-        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        if (currentScroll > 60) {
+      function fadeHeaderOnScroll() {
+        // Get current scroll position from multiple sources for cross-browser compatibility
+        const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+
+        // Apply fade effect at a lower threshold for better mobile experience
+        if (scrollTop > 30) {
           header.classList.add('faded');
         } else {
           header.classList.remove('faded');
         }
-        lastScroll = currentScroll;
+
+        lastScrollTop = scrollTop;
+        ticking = false;
       }
 
-      // Add scroll event listener
-      window.addEventListener('scroll', handleScroll);
+      // Throttle scroll events for better performance
+      function requestFade() {
+        if (!ticking) {
+          requestAnimationFrame(fadeHeaderOnScroll);
+          ticking = true;
+        }
+      }
 
-      // Also trigger on touch events for mobile
-      window.addEventListener('touchmove', handleScroll);
-      window.addEventListener('touchend', handleScroll);
+      // Add all possible event listeners for maximum compatibility
+      window.addEventListener('scroll', requestFade, { passive: true });
+      window.addEventListener('touchmove', requestFade, { passive: true });
+      window.addEventListener('touchstart', requestFade, { passive: true });
+      window.addEventListener('touchend', requestFade, { passive: true });
+
+      // Initial check
+      fadeHeaderOnScroll();
 
       // Set animation order for nav links
       document.querySelectorAll('nav a').forEach((link, index) => {
