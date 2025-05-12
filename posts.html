@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sahxiety – Posts</title>
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700|Georgia:400,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-bg-dark: #000000;
+      --color-text-dark: #f5f5f5;
+      --color-bg-light: #f9f9f9;
+      --color-text-light: #222222;
+      --transition-speed: 0.3s;
+      --accent-color: #8a2be2;
+      --accent-color-hover: #6a1fb3;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-dark);
+      font-family: 'Georgia', serif;
+      font-size: 1.15em;
+      line-height: 1.8;
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+      text-align: left;
+    }
+    body.light-mode {
+      background-color: var(--color-bg-light);
+      color: var(--color-text-light);
+    }
+    .fade-header {
+      width: 100%;
+      background: transparent;
+      transition: opacity 0.4s;
+      opacity: 1;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 20px 0;
+      text-align: center;
+    }
+    .fade-header.faded {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .site-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.1em;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin: 0;
+      padding: 0;
+      color: var(--color-text-dark);
+      text-align: center;
+      transition: color var(--transition-speed);
+    }
+    .today-date-container {
+      width: 100%;
+      text-align: center;
+      margin: 15px auto 0 auto;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap; /* Allow wrapping on small screens */
+    }
+
+    .today-date {
+      text-align: center;
+      color: #aaa;
+      font-size: 1em;
+      font-family: 'Georgia', serif;
+      letter-spacing: 0.03em;
+      position: relative;
+      padding: 15px;
+      border-radius: 12px;
+      background: rgba(138, 43, 226, 0.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(4px);
+      transition: all 0.3s ease;
+      display: inline-block;
+      min-width: 300px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal; /* Allow text to wrap on mobile */
+    }
+
+    .today-date:hover {
+      background: rgba(138, 43, 226, 0.1);
+      box-shadow: 0 8px 25px rgba(138, 43, 226, 0.2);
+      transform: translateY(-5px) scale(1.03);
+    }
+
+    .clock-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 10px;
+      position: relative;
+    }
+
+    .clock {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-color);
+      position: relative;
+      display: inline-block;
+      margin-right: 15px;
+      background: rgba(138, 43, 226, 0.1);
+      box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      transition: all 0.3s ease;
+      vertical-align: middle;
+    }
+
+    /* Clock markings - removed cross markings */
+    .clock::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+    }
+
+    /* Hour markings with numbers */
+    .clock-hour-marks {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      font-size: 10px;
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+
+    .clock-hour-mark {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 2px;
+      transform-origin: center center;
+    }
+
+    .clock:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+    }
+
+    .clock-hour, .clock-minute {
+      position: absolute;
+      background: var(--accent-color);
+      transform-origin: bottom center;
+      top: 50%;
+      left: 50%;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(138, 43, 226, 0.5);
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .clock-hour {
+      width: 3px;
+      height: 20px;
+      margin-left: -1.5px;
+      margin-top: -20px;
+    }
+
+    .clock-minute {
+      width: 2px;
+      height: 28px;
+      margin-left: -1px;
+      margin-top: -28px;
+    }
+
+    .clock:hover .clock-hour,
+    .clock:hover .clock-minute {
+      background: #fff;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .date-part {
+      display: inline-block;
+      position: relative;
+      transition: all 0.3s ease;
+      padding: 0 3px;
+      border-radius: 4px;
+    }
+
+    .date-part:hover {
+      color: var(--accent-color);
+      transform: translateY(-3px) scale(1.1);
+      text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+      background: rgba(138, 43, 226, 0.1);
+    }
+
+    .date-separator {
+      display: inline-block;
+      margin: 0 3px;
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+    body.light-mode .site-title {
+      color: var(--color-text-light);
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 36px;
+      margin: 15px 0 0 0;
+      font-family: 'Playfair Display', serif;
+    }
+    nav a, nav button {
+      color: var(--accent-color);
+      background: none;
+      border: none;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.07em;
+      letter-spacing: 0.03em;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    nav a:hover, nav a.active, nav button:hover {
+      color: var(--accent-color-hover);
+      border-bottom: 2px solid var(--accent-color-hover);
+    }
+    nav button:focus { outline: none; }
+    #theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: inherit;
+      font-size: 1.8em;
+      padding: 6px;
+      border-radius: 50%;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #theme-toggle:hover {
+      background-color: rgba(255 255 255 / 0.1);
+    }
+    main {
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 120px 32px 48px 32px; /* Increased top padding to account for fixed header */
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2em;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-align: left;
+      margin-top: 0;
+      margin-bottom: 1em;
+      position: relative;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+      animation: shimmer 2s infinite;
+      background-size: 200% 100%;
+    }
+    ul.posts-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .posts-list li {
+      margin-bottom: 32px;
+      padding: 20px;
+      border-radius: 12px;
+      background: rgba(138, 43, 226, 0.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(138, 43, 226, 0.1);
+    }
+
+    .posts-list li::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-color);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.3s ease;
+    }
+
+    .posts-list li:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(138, 43, 226, 0.2);
+    }
+
+    .posts-list li:hover::before {
+      transform: scaleY(1);
+    }
+
+    body.light-mode .posts-list li {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(138, 43, 226, 0.1);
+    }
+
+    .posts-list a {
+      color: var(--accent-color);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.18em;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .posts-list a:hover {
+      color: var(--accent-color-hover);
+      letter-spacing: 0.03em;
+    }
+
+    .posts-list .post-date {
+      color: #aaa;
+      font-size: 0.96em;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .posts-list li:hover .post-date {
+      color: var(--accent-color);
+    }
+
+    .posts-list .post-excerpt {
+      margin-top: 10px;
+      font-size: 0.95em;
+      line-height: 1.6;
+      color: #999;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, margin-top 0.5s ease;
+    }
+
+    .posts-list li:hover .post-excerpt {
+      max-height: 100px;
+      margin-top: 15px;
+    }
+
+    /* Upcoming posts styles */
+    .upcoming-posts-header {
+      margin-top: 40px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+      color: var(--accent-color);
+      font-family: 'Playfair Display', serif;
+      position: relative;
+    }
+
+    .upcoming-posts-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100px;
+      height: 3px;
+      background: var(--accent-color);
+      animation: shimmer 2s infinite;
+      background-size: 200% 100%;
+    }
+
+    .upcoming-post {
+      opacity: 0.8;
+      background: linear-gradient(135deg, rgba(138, 43, 226, 0.08), rgba(0, 0, 0, 0.1), rgba(138, 43, 226, 0.05));
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      border: 1px dashed rgba(138, 43, 226, 0.3) !important;
+    }
+
+    .upcoming-post:hover {
+      opacity: 1;
+      border: 1px solid rgba(138, 43, 226, 0.3) !important;
+    }
+
+    .upcoming-badge {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 3px 8px;
+      background: var(--accent-color);
+      color: white;
+      border-radius: 12px;
+      font-size: 0.8em;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* Loading spinner */
+    .posts-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 0;
+      color: #aaa;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(138, 43, 226, 0.1);
+      border-radius: 50%;
+      border-top: 4px solid var(--accent-color);
+      animation: rotate 1s linear infinite;
+      margin-bottom: 15px;
+    }
+
+    /* No posts message */
+    .no-posts-message {
+      text-align: center;
+      padding: 40px;
+      color: #aaa;
+      font-style: italic;
+      background: rgba(138, 43, 226, 0.05);
+      border-radius: 12px;
+      border: 1px dashed rgba(138, 43, 226, 0.2);
+      animation: pulse 3s infinite ease-in-out;
+      margin: 30px 0;
+      font-size: 1.2em;
+      line-height: 1.6;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    footer {
+      width: 100%;
+      text-align: center;
+      color: #aaa;
+      font-size: 1em;
+      padding: 32px 0 18px 0;
+      font-family: 'Georgia', serif;
+      letter-spacing: 0.03em;
+      margin-top: 40px;
+      position: sticky;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 5;
+    }
+    /* Optimized Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.98); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(15px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideInLeft {
+      from { transform: translateX(-15px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -100% 0; }
+      100% { background-position: 100% 0; }
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes clockTick {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    @keyframes flipIn {
+      0% { transform: perspective(400px) rotateX(5deg); opacity: 0; }
+      100% { transform: perspective(400px) rotateX(0deg); opacity: 1; }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { text-shadow: 0 0 3px rgba(138, 43, 226, 0.3); }
+      50% { text-shadow: 0 0 10px rgba(138, 43, 226, 0.5), 0 0 15px rgba(138, 43, 226, 0.3); }
+    }
+
+    /* Apply animations to elements */
+    h1 {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    .posts-list li {
+      animation: slideInLeft 0.3s ease-out forwards;
+      animation-delay: calc(0.05s * var(--animation-order, 0));
+    }
+
+    nav a {
+      animation: slideInRight 0.3s ease-out forwards;
+      animation-delay: calc(0.05s * var(--animation-order, 0));
+    }
+
+    .today-date {
+      animation: fadeIn 0.4s ease-out 0.1s both;
+    }
+
+    /* Enhanced hover effects */
+    .posts-list a {
+      position: relative;
+      display: inline-block;
+      transition: color 0.3s, transform 0.2s;
+    }
+
+    .posts-list a:hover {
+      color: var(--accent-color-hover);
+      transform: translateX(5px);
+    }
+
+    .posts-list a::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      transform: scaleX(0);
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--accent-color-hover);
+      transform-origin: bottom right;
+      transition: transform 0.3s ease-out;
+    }
+
+    .posts-list a:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+
+    @media (max-width: 700px) {
+      html, body {
+        font-size: 1.05em;
+      }
+
+      main {
+        padding: 36px 16px 36px 16px;
+        margin-top: 140px; /* Add space for fixed header and clock */
+      }
+
+      h1 {
+        font-size: 1.5em;
+        line-height: 1.4;
+        margin-bottom: 1.2em;
+        margin-top: 0;
+      }
+
+      .site-title {
+        font-size: 1.6em;
+        padding-top: 18px;
+      }
+
+      .today-date-container {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .today-date {
+        font-size: 0.9em;
+        margin-bottom: 10px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .clock {
+        width: 60px;
+        height: 60px;
+        margin-right: 10px;
+      }
+
+      .clock-hour {
+        height: 16px;
+        margin-top: -16px;
+      }
+
+      .clock-minute {
+        height: 22px;
+        margin-top: -22px;
+      }
+
+      /* Ensure header doesn't overlap content */
+      .fade-header {
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
+        padding: 10px 0;
+      }
+
+      nav {
+        gap: 20px;
+        font-size: 1.05em;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0 10px;
+        margin-bottom: 5px;
+      }
+
+      nav a {
+        padding: 8px 0;
+        margin-bottom: 5px;
+      }
+
+      .posts-list a {
+        font-size: 1.2em;
+      }
+
+      .posts-list .post-date {
+        font-size: 0.9em;
+        display: block; /* Stack date below title on mobile */
+        margin-top: 5px;
+      }
+
+      .posts-list li {
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+
+      #theme-toggle {
+        top: 12px;
+        right: 12px;
+        font-size: 1.6em;
+      }
+    }
+
+    /* Small mobile devices */
+    @media (max-width: 480px) {
+      html, body {
+        font-size: 1em;
+      }
+
+      main {
+        padding-top: 150px; /* More space for header on small devices */
+      }
+
+      .site-title {
+        font-size: 1.5em;
+      }
+
+      nav {
+        gap: 12px;
+        margin-top: 12px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav a {
+        font-size: 0.95em;
+        padding: 6px 8px;
+        margin: 2px;
+      }
+
+      h1 {
+        font-size: 1.4em;
+      }
+
+      .posts-list a {
+        font-size: 1.15em;
+      }
+
+      .clock {
+        width: 50px;
+        height: 50px;
+      }
+
+      .clock-hour {
+        height: 14px;
+        margin-top: -14px;
+      }
+
+      .clock-minute {
+        height: 18px;
+        margin-top: -18px;
+      }
+
+      .today-date {
+        font-size: 0.85em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Particle background -->
+  <div class="particles" id="particles"></div>
+
+  <button id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+    <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="display: inline;">
+      <path d="M21.75 15.5a9 9 0 01-11.19-11.19 7 7 0 109.19 9.19 8.94 8.94 0 011.99 1z"/>
+    </svg>
+    <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="display: none;">
+      <path d="M12 4.75a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0112 4.75zm5.657 1.657a.75.75 0 011.06 1.06l-1.06 1.06a.75.75 0 11-1.06-1.06l1.06-1.06zM18.25 12a.75.75 0 01.75.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm-6.25 6.25a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zm-5.657-1.657a.75.75 0 01-1.06-1.06l1.06-1.06a.75.75 0 111.06 1.06l-1.06 1.06zM5.75 12a.75.75 0 01-.75-.75H3.5a.75.75 0 010-1.5h1.5a.75.75 0 01.75.75zm6.25-6.25a.75.75 0 01-.75-.75V3.5a.75.75 0 011.5 0v1.5a.75.75 0 01-.75.75zm0 12a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z"/>
+    </svg>
+  </button>
+  <header id="fade-header" class="fade-header">
+    <div class="site-title">sahxiety</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="posts.html" class="active">Posts</a>
+      <a href="newsletter.html">Newsletter</a>
+      <a href="contact.html" title="Contact Sahil">Contact</a>
+    </nav>
+    <div class="today-date-container">
+      <div class="today-date" id="today-date"></div>
+    </div>
+  </header>
+  <main>
+    <h1>Posts</h1>
+    <ul class="posts-list" id="posts-list">
+      <!-- Posts will be loaded dynamically -->
+      <div class="posts-loading">
+        <div class="loading-spinner"></div>
+        <p>Loading posts...</p>
+      </div>
+    </ul>
+  </main>
+  <footer>
+    © 2025 Sahil Yadav. All rights reserved.
+  </footer>
+  <script>
+    // Create particle background
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = window.innerWidth < 768 ? 15 : 30;
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+
+        // Random position
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        particle.style.left = `${posX}%`;
+        particle.style.top = `${posY}%`;
+
+        // Random size
+        const size = Math.random() * 8 + 2;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+
+        // Random opacity
+        particle.style.opacity = Math.random() * 0.5 + 0.1;
+
+        // Random animation duration and delay
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * 5;
+        particle.style.animation = `float ${duration}s infinite ease-in-out ${delay}s`;
+
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Theme toggle
+    const toggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+    const iconMoon = document.getElementById('icon-moon');
+    const iconSun = document.getElementById('icon-sun');
+
+    function updateIcons() {
+      if (body.classList.contains('light-mode')) {
+        iconMoon.style.display = 'none';
+        iconSun.style.display = 'inline';
+      } else {
+        iconMoon.style.display = 'inline';
+        iconSun.style.display = 'none';
+      }
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      body.classList.toggle('light-mode');
+      updateIcons();
+    });
+
+    updateIcons();
+
+    // Fade header on scroll
+    let lastScroll = 0;
+    const header = document.getElementById('fade-header');
+
+    window.addEventListener('scroll', function() {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > 60) {
+        header.classList.add('faded');
+      } else {
+        header.classList.remove('faded');
+      }
+      lastScroll = currentScroll;
+    });
+
+    // Dynamic date and time with enhanced animated clock
+    function updateDateTime() {
+      const now = new Date();
+
+      // Format date parts
+      const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      };
+
+      const formatter = new Intl.DateTimeFormat('en-US', options);
+      const dateTimeStr = formatter.format(now);
+
+      // Split the date time string into parts
+      const dateElement = document.getElementById('today-date');
+      dateElement.innerHTML = ''; // Clear previous content
+
+      // Create animated clock
+      const clockContainer = document.createElement('div');
+      clockContainer.className = 'clock-container';
+
+      const clock = document.createElement('div');
+      clock.className = 'clock';
+
+      const hourHand = document.createElement('div');
+      hourHand.className = 'clock-hour';
+
+      const minuteHand = document.createElement('div');
+      minuteHand.className = 'clock-minute';
+
+      // Add clock face details for more visual appeal
+      const clockFace = document.createElement('div');
+      clockFace.style.position = 'absolute';
+      clockFace.style.width = '6px';
+      clockFace.style.height = '6px';
+      clockFace.style.borderRadius = '50%';
+      clockFace.style.background = 'white';
+      clockFace.style.top = '50%';
+      clockFace.style.left = '50%';
+      clockFace.style.transform = 'translate(-50%, -50%)';
+      clockFace.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.8)';
+      clockFace.style.zIndex = '2';
+
+      // Add numerical markings (1-12)
+      for (let i = 1; i <= 12; i++) {
+        const number = document.createElement('div');
+        number.style.position = 'absolute';
+        number.style.width = '100%';
+        number.style.height = '100%';
+        number.style.textAlign = 'center';
+        number.style.fontSize = '12px';
+        number.style.fontWeight = 'bold';
+        number.style.color = 'var(--accent-color)';
+
+        // Calculate position for each number
+        const angle = (i * 30) * (Math.PI / 180); // 30 degrees per hour
+        const radius = 28; // Distance from center (increased for larger clock)
+        const x = Math.sin(angle) * radius;
+        const y = -Math.cos(angle) * radius;
+
+        const numberText = document.createElement('span');
+        numberText.textContent = i;
+        numberText.style.position = 'absolute';
+        numberText.style.left = `calc(50% + ${x}px)`;
+        numberText.style.top = `calc(50% + ${y}px)`;
+        numberText.style.transform = 'translate(-50%, -50%)';
+
+        number.appendChild(numberText);
+        clock.appendChild(number);
+      }
+
+      // Set clock hands position with smooth animation for real-time
+      const hours = now.getHours() % 12;
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const milliseconds = now.getMilliseconds();
+
+      // Calculate precise angles for smooth movement
+      const hourAngle = (hours * 30) + (minutes * 0.5) + (seconds * 0.008) + (milliseconds * 0.000008);
+      const minuteAngle = (minutes * 6) + (seconds * 0.1) + (milliseconds * 0.0001);
+
+      hourHand.style.transform = `rotate(${hourAngle}deg)`;
+      minuteHand.style.transform = `rotate(${minuteAngle}deg)`;
+
+      clock.appendChild(hourHand);
+      clock.appendChild(minuteHand);
+      clock.appendChild(clockFace);
+      clockContainer.appendChild(clock);
+
+      // Create date parts with better styling (no animations)
+      const parts = dateTimeStr.split(/([,:])/g);
+      parts.forEach((part, index) => {
+        if (part.trim() === '') return;
+
+        if (part === ',' || part === ':') {
+          const separator = document.createElement('span');
+          separator.className = 'date-separator';
+          separator.textContent = part;
+          dateElement.appendChild(separator);
+        } else {
+          const span = document.createElement('span');
+          span.className = 'date-part';
+          span.textContent = part;
+          dateElement.appendChild(span);
+        }
+      });
+
+      // Add the clock at the beginning
+      dateElement.insertBefore(clockContainer, dateElement.firstChild);
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+    // Function to check if a post date is in the future
+    function isFuturePost(postDate) {
+      const now = new Date();
+      return postDate > now;
+    }
+
+    // Function to format a date with proper ordinal suffix
+    function formatDateWithOrdinal(date) {
+      const day = date.getDate();
+      const month = date.toLocaleString('en-US', { month: 'long' });
+      const year = date.getFullYear();
+
+      const ordinalSuffix = (day) => {
+        if (day > 3 && day < 21) return 'th';
+        switch (day % 10) {
+          case 1: return 'st';
+          case 2: return 'nd';
+          case 3: return 'rd';
+          default: return 'th';
+        }
+      };
+
+      return `${day}${ordinalSuffix(day)} ${month} ${year}`;
+    }
+
+    // Load posts dynamically from JSON
+    async function loadPosts() {
+      try {
+        const response = await fetch('posts.json');
+        const posts = await response.json();
+
+        const postsList = document.getElementById('posts-list');
+        postsList.innerHTML = ''; // Clear loading indicator
+
+        // Sort posts by date (newest first)
+        posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // Include the homepage in the posts list
+        // Check if there are any posts to display
+        if (posts.length === 0) {
+          // No posts to display
+          const noPostsMessage = document.createElement('div');
+          noPostsMessage.className = 'no-posts-message';
+          noPostsMessage.innerHTML = 'No posts published yet. <br>Stay tuned for upcoming content!';
+          noPostsMessage.style.animation = 'fadeIn 0.8s ease-out forwards';
+          postsList.appendChild(noPostsMessage);
+          return;
+        }
+
+        // Create a container for upcoming posts if any exist
+        let upcomingPostsContainer = null;
+        let hasUpcomingPosts = false;
+
+        posts.forEach((post, index) => {
+          const postDate = new Date(post.date);
+          const isUpcoming = isFuturePost(postDate);
+
+          // If this is an upcoming post and we haven't created the container yet
+          if (isUpcoming && !upcomingPostsContainer) {
+            hasUpcomingPosts = true;
+
+            // Create upcoming posts header
+            const upcomingHeader = document.createElement('h2');
+            upcomingHeader.textContent = 'Upcoming Posts';
+            upcomingHeader.className = 'upcoming-posts-header';
+            upcomingHeader.style.animation = 'fadeIn 0.8s ease-out forwards';
+            postsList.appendChild(upcomingHeader);
+
+            // Create upcoming posts container
+            upcomingPostsContainer = document.createElement('div');
+            upcomingPostsContainer.className = 'upcoming-posts';
+            postsList.appendChild(upcomingPostsContainer);
+          }
+
+          const li = document.createElement('li');
+          li.style.animationDelay = `${index * 0.1}s`;
+
+          // Add a special class for upcoming posts
+          if (isUpcoming) {
+            li.classList.add('upcoming-post');
+          }
+
+          // Format the date with ordinal suffix
+          const formattedDate = formatDateWithOrdinal(postDate);
+
+          // Create post link
+          const link = document.createElement('a');
+          link.href = post.content;
+          link.textContent = post.title;
+
+          // Create post date with clock icon
+          const dateSpan = document.createElement('span');
+          dateSpan.className = 'post-date';
+
+          const clockIcon = document.createElement('div');
+          clockIcon.className = 'clock';
+          clockIcon.style.width = '20px';
+          clockIcon.style.height = '20px';
+          clockIcon.style.marginRight = '8px';
+
+          // Set background for the small clock
+          clockIcon.style.background = 'rgba(138, 43, 226, 0.1)';
+
+          // Add numerical markings (1-12) to the small clock
+          for (let i = 1; i <= 12; i++) {
+            const angle = (i * 30) * (Math.PI / 180); // 30 degrees per hour
+            const radius = 8; // Distance from center (increased for larger clock)
+            const x = Math.sin(angle) * radius;
+            const y = -Math.cos(angle) * radius;
+
+            const numberMark = document.createElement('div');
+            numberMark.style.position = 'absolute';
+            numberMark.style.fontSize = '5px';
+            numberMark.style.fontWeight = 'bold';
+            numberMark.style.color = 'var(--accent-color)';
+            numberMark.style.left = `calc(50% + ${x}px)`;
+            numberMark.style.top = `calc(50% + ${y}px)`;
+            numberMark.style.transform = 'translate(-50%, -50%)';
+            numberMark.textContent = i;
+
+            clockIcon.appendChild(numberMark);
+          }
+
+          const hourHand = document.createElement('div');
+          hourHand.className = 'clock-hour';
+          hourHand.style.height = '5px';
+          hourHand.style.width = '1.5px';
+          hourHand.style.marginLeft = '-0.75px';
+          hourHand.style.marginTop = '-5px';
+
+          const minuteHand = document.createElement('div');
+          minuteHand.className = 'clock-minute';
+          minuteHand.style.height = '7px';
+          minuteHand.style.width = '1px';
+          minuteHand.style.marginLeft = '-0.5px';
+          minuteHand.style.marginTop = '-7px';
+
+          // Set clock hands to match post time
+          const hours = postDate.getHours() % 12;
+          const minutes = postDate.getMinutes();
+          const seconds = postDate.getSeconds();
+
+          hourHand.style.transform = `rotate(${(hours * 30) + (minutes * 0.5) + (seconds * 0.008)}deg)`;
+          minuteHand.style.transform = `rotate(${minutes * 6 + (seconds * 0.1)}deg)`;
+
+          // No center dot for small clock as requested
+
+          clockIcon.appendChild(hourHand);
+          clockIcon.appendChild(minuteHand);
+
+          dateSpan.appendChild(clockIcon);
+          dateSpan.appendChild(document.createTextNode(formattedDate));
+
+          // Add "Upcoming" badge for future posts
+          if (isUpcoming) {
+            const upcomingBadge = document.createElement('span');
+            upcomingBadge.className = 'upcoming-badge';
+            upcomingBadge.textContent = 'Coming Soon';
+            dateSpan.appendChild(upcomingBadge);
+          }
+
+          // Create post excerpt
+          const excerptP = document.createElement('p');
+          excerptP.className = 'post-excerpt';
+          excerptP.textContent = post.excerpt;
+
+          // Add elements to list item
+          li.appendChild(link);
+          li.appendChild(dateSpan);
+          li.appendChild(excerptP);
+
+          // Add to the appropriate container
+          if (isUpcoming && upcomingPostsContainer) {
+            upcomingPostsContainer.appendChild(li);
+          } else {
+            postsList.appendChild(li);
+          }
+        });
+
+        // Add animation to post items after they're loaded
+        document.querySelectorAll('.posts-list li').forEach((item, index) => {
+          item.style.setProperty('--animation-order', index);
+          item.style.animation = 'flipIn 0.8s ease-out forwards';
+          item.style.animationDelay = `${0.1 * index}s`;
+        });
+
+        // If we have upcoming posts, add special styling
+        if (hasUpcomingPosts) {
+          document.querySelectorAll('.upcoming-post').forEach((item, index) => {
+            item.style.animation = 'fadeIn 0.8s ease-out forwards';
+            item.style.animationDelay = `${0.5 + (0.1 * index)}s`;
+          });
+        }
+
+      } catch (error) {
+        console.error('Error loading posts:', error);
+        const postsList = document.getElementById('posts-list');
+        postsList.innerHTML = '<div class="posts-loading">Failed to load posts. Please try again later.</div>';
+      }
+    }
+
+    // Set animation order for nav links
+    document.querySelectorAll('nav a').forEach((link, index) => {
+      link.style.setProperty('--animation-order', index);
+    });
+
+    // Set animation order for post list items
+    document.querySelectorAll('.posts-list li').forEach((item, index) => {
+      item.style.setProperty('--animation-order', index);
+    });
+
+    // Add enhanced hover animations to post links
+    document.querySelectorAll('.posts-list a').forEach(link => {
+      link.addEventListener('mouseenter', function() {
+        this.style.transition = 'all 0.3s ease';
+        this.style.transform = 'translateX(5px)';
+        this.style.color = 'var(--accent-color-hover)';
+        this.style.textShadow = '0 0 8px rgba(138, 43, 226, 0.3)';
+      });
+
+      link.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateX(0)';
+        this.style.color = '';
+        this.style.textShadow = '';
+      });
+    });
+
+    // Add scroll reveal animations with enhanced effects
+    function revealOnScroll() {
+      const elements = document.querySelectorAll('.posts-list li, h1, .today-date');
+
+      elements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+
+        if (elementTop < window.innerHeight - elementVisible) {
+          element.style.visibility = 'visible';
+          element.style.opacity = '1';
+
+          // Add special animation for post items when they come into view
+          if (element.tagName === 'LI') {
+            element.style.transform = 'translateX(0)';
+          }
+        }
+      });
+    }
+
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      createParticles();
+
+      // Add shimmer effect to heading
+      const heading = document.querySelector('h1');
+      heading.style.position = 'relative';
+
+      const shimmer = document.createElement('div');
+      shimmer.style.position = 'absolute';
+      shimmer.style.bottom = '-5px';
+      shimmer.style.left = '0';
+      shimmer.style.width = '100%';
+      shimmer.style.height = '2px';
+      shimmer.style.background = 'linear-gradient(90deg, transparent, var(--accent-color), transparent)';
+      shimmer.style.backgroundSize = '200% 100%';
+      shimmer.style.animation = 'shimmer 2s infinite';
+
+      heading.appendChild(shimmer);
+
+      // Add 3D tilt effect to the date container
+      const dateContainer = document.querySelector('.today-date-container');
+
+      dateContainer.addEventListener('mousemove', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left; // x position within the element
+        const y = e.clientY - rect.top; // y position within the element
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const deltaX = (x - centerX) / centerX * 10; // max 10 degrees
+        const deltaY = (y - centerY) / centerY * 10; // max 10 degrees
+
+        document.querySelector('.today-date').style.transform =
+          `perspective(1000px) rotateX(${-deltaY}deg) rotateY(${deltaX}deg) translateZ(10px)`;
+      });
+
+      dateContainer.addEventListener('mouseleave', function() {
+        document.querySelector('.today-date').style.transform =
+          'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+      });
+
+      // Load posts dynamically
+      loadPosts();
+
+      window.addEventListener('scroll', revealOnScroll);
+      revealOnScroll(); // Run once on page load
+    });
+  </script>
+</body>
+</html>

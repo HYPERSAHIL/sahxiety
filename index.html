@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sahxiety – Why Did I Create This?</title>
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700|Georgia:400,700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --color-bg-dark: #000000;
+        --color-text-dark: #f5f5f5;
+        --color-bg-light: #f9f9f9;
+        --color-text-light: #222222;
+        --transition-speed: 0.3s;
+        --accent-color: #8a2be2;
+        --accent-color-hover: #6a1fb3;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background-color: var(--color-bg-dark);
+        color: var(--color-text-dark);
+        font-family: 'Georgia', serif;
+        font-size: 1.15em;
+        line-height: 1.8;
+        transition: background-color var(--transition-speed), color var(--transition-speed);
+        text-align: left;
+        overflow-x: hidden; /* Hide horizontal scrollbar */
+      }
+
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Hide scrollbar for IE, Edge and Firefox */
+      html {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
+      body.light-mode {
+        background-color: var(--color-bg-light);
+        color: var(--color-text-light);
+      }
+      .fade-header {
+        width: 100%;
+        background: transparent;
+        transition: opacity 0.4s;
+        opacity: 1;
+        position: relative;
+        z-index: 10;
+      }
+      .fade-header.faded {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .site-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.1em;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin: 0;
+        padding: 32px 0 0 0;
+        color: var(--color-text-dark);
+        text-align: center;
+        transition: color var(--transition-speed);
+      }
+      body.light-mode .site-title {
+        color: var(--color-text-light);
+      }
+      nav {
+        display: flex;
+        justify-content: center;
+        gap: 36px;
+        margin: 24px 0 0 0;
+        font-family: 'Playfair Display', serif;
+      }
+      nav a, nav button {
+        color: var(--accent-color);
+        background: none;
+        border: none;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.07em;
+        letter-spacing: 0.03em;
+        padding: 4px 0;
+        border-bottom: 2px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      nav a:hover, nav a.active, nav button:hover {
+        color: var(--accent-color-hover);
+        border-bottom: 2px solid var(--accent-color-hover);
+      }
+      nav button:focus { outline: none; }
+      #theme-toggle {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: inherit;
+        font-size: 1.8em;
+        padding: 6px;
+        border-radius: 50%;
+        transition: background-color 0.3s, color 0.3s;
+        user-select: none;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #theme-toggle:hover {
+        background-color: rgba(255 255 255 / 0.1);
+      }
+      main {
+        max-width: 680px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 40px 32px 48px 32px;
+      }
+      h1, h2, h3, h4 {
+        font-family: 'Playfair Display', serif;
+        margin-top: 0;
+        margin-bottom: 1em;
+        color: inherit;
+        word-break: break-word;
+      }
+      h1 {
+        font-size: 2em;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-align: left;
+      }
+      p {
+        margin-bottom: 1.5em;
+        color: inherit;
+        word-break: break-word;
+      }
+      strong {
+        font-weight: 700;
+        color: inherit;
+      }
+      .signature {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2em;
+        color: inherit;
+        margin-top: 3em;
+        letter-spacing: 1px;
+      }
+      .newsletter {
+        background: rgba(255,255,255,0.07);
+        border-radius: 14px;
+        padding: 32px 24px 24px 24px;
+        margin: 48px 0 0 0;
+        text-align: center;
+        box-shadow: 0 0 12px rgba(255,255,255,0.08);
+        transition: background-color var(--transition-speed);
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      body.light-mode .newsletter {
+        background: #fff;
+        box-shadow: 0 2px 18px rgba(0,0,0,0.06);
+      }
+      .newsletter h3 {
+        margin-top: 0;
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: inherit;
+      }
+      .newsletter-desc {
+        font-size: 1em;
+        color: #aaa;
+        margin-bottom: 18px;
+        text-align: center;
+        line-height: 1.6;
+      }
+      #newsletter-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        margin-top: 10px;
+        width: 100%;
+      }
+      #newsletter-form input[type="text"],
+      #newsletter-form input[type="email"] {
+        width: 100%;
+        max-width: 320px;
+        padding: 12px 14px;
+        border-radius: 7px;
+        border: 1px solid #444;
+        font-size: 1em;
+        margin-bottom: 0;
+        background: #181818;
+        color: #f5f5f5;
+        font-family: 'Georgia', serif;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      #newsletter-form input:focus {
+        border-color: var(--accent-color);
+      }
+      #newsletter-form button {
+        background: var(--accent-color);
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        padding: 12px 32px;
+        font-size: 1.1em;
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-top: 10px;
+        width: auto;
+      }
+      #newsletter-form button:hover {
+        background: var(--accent-color-hover);
+      }
+      #newsletter-message {
+        margin-top: 12px;
+        font-size: 1em;
+        text-align: center;
+      }
+      /* Optimized Animations */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes scaleIn {
+        from { transform: scale(0.98); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+
+      @keyframes slideInRight {
+        from { transform: translateX(15px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+
+      @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0px); }
+      }
+
+      @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+      }
+
+      @keyframes blink {
+        50% { border-color: transparent }
+      }
+
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+        20%, 40%, 60%, 80% { transform: translateX(3px); }
+      }
+
+      @keyframes rotate3D {
+        0% { transform: perspective(1000px) rotateY(0deg); }
+        100% { transform: perspective(1000px) rotateY(360deg); }
+      }
+
+      @keyframes shimmer {
+        0% { background-position: -100% 0; }
+        100% { background-position: 100% 0; }
+      }
+
+      /* Particle background */
+      .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background-color: var(--accent-color);
+        border-radius: 50%;
+        opacity: 0.3;
+        animation: float 15s infinite ease-in-out;
+      }
+
+      /* Apply animations to elements */
+      h1 {
+        position: relative;
+        animation: fadeIn 0.4s ease-out forwards;
+        overflow: hidden;
+      }
+
+      h1::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+        animation: shimmer 2s infinite;
+        background-size: 200% 100%;
+      }
+
+      p {
+        animation: fadeIn 0.4s ease-out forwards;
+        animation-delay: calc(0.1s * var(--animation-order, 1));
+      }
+
+      .signature {
+        animation: fadeIn 0.4s ease-out forwards, float 6s ease-in-out 2s infinite;
+        position: relative;
+      }
+
+      .signature::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 25%;
+        width: 50%;
+        height: 2px;
+        background: var(--accent-color);
+        transform: scaleX(0);
+        transition: transform 0.5s ease;
+        transform-origin: center;
+      }
+
+      .signature:hover::after {
+        transform: scaleX(1);
+      }
+
+      /* Enhanced newsletter section */
+      .newsletter {
+        background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(0, 0, 0, 0.2), rgba(138, 43, 226, 0.15));
+        background-size: 400% 400%;
+        animation: scaleIn 0.7s ease-out 0.3s both, gradientBG 15s ease infinite;
+        border: 1px solid rgba(138, 43, 226, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .newsletter:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 36px rgba(138, 43, 226, 0.3);
+      }
+
+      /* Recent posts section */
+      .recent-posts {
+        margin: 40px 0;
+        padding: 30px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(138, 43, 226, 0.05), rgba(0, 0, 0, 0.1), rgba(138, 43, 226, 0.08));
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        border: 1px solid rgba(138, 43, 226, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+      }
+
+      .recent-posts h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.6em;
+        margin-top: 0;
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+      }
+
+      .recent-posts h2::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent-color), transparent);
+      }
+
+      /* Posts list styles */
+      .posts-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .posts-list li {
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        background: rgba(138, 43, 226, 0.05);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(138, 43, 226, 0.1);
+      }
+
+      .posts-list li::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--accent-color);
+        transform: scaleY(0);
+        transform-origin: bottom;
+        transition: transform 0.3s ease;
+      }
+
+      .posts-list li:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 10px 25px rgba(138, 43, 226, 0.2);
+      }
+
+      .posts-list li:hover::before {
+        transform: scaleY(1);
+      }
+
+      .posts-list a {
+        color: var(--accent-color);
+        font-family: 'Playfair Display', serif;
+        font-size: 1.1em;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: block;
+        position: relative;
+        z-index: 1;
+      }
+
+      .posts-list a:hover {
+        color: var(--accent-color-hover);
+        letter-spacing: 0.03em;
+      }
+
+      .posts-list .post-date {
+        color: #aaa;
+        font-size: 0.9em;
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+      }
+
+      .posts-list li:hover .post-date {
+        color: var(--accent-color);
+      }
+
+      .posts-list .post-excerpt {
+        margin-top: 10px;
+        font-size: 0.9em;
+        line-height: 1.6;
+        color: #999;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease, margin-top 0.5s ease;
+      }
+
+      .posts-list li:hover .post-excerpt {
+        max-height: 80px;
+        margin-top: 10px;
+      }
+
+      /* View All Posts link */
+      .view-all-posts {
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px;
+      }
+
+      .view-all-link {
+        display: inline-block;
+        padding: 10px 20px;
+        background: var(--accent-color);
+        color: white;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .view-all-link::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transform: rotate(45deg);
+        transition: all 0.5s ease;
+        z-index: -1;
+      }
+
+      .view-all-link:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(138, 43, 226, 0.5);
+      }
+
+      .view-all-link:hover::before {
+        left: 100%;
+      }
+
+      /* No posts message */
+      .no-posts-message {
+        text-align: center;
+        padding: 40px;
+        color: #aaa;
+        font-style: italic;
+        background: rgba(138, 43, 226, 0.05);
+        border-radius: 12px;
+        border: 1px dashed rgba(138, 43, 226, 0.2);
+        animation: pulse 3s infinite ease-in-out;
+        margin: 20px 0;
+        font-size: 1.1em;
+        line-height: 1.6;
+      }
+
+      /* Loading spinner */
+      .posts-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 0;
+        color: #aaa;
+      }
+
+      .loading-spinner {
+        width: 30px;
+        height: 30px;
+        border: 3px solid rgba(138, 43, 226, 0.1);
+        border-radius: 50%;
+        border-top: 3px solid var(--accent-color);
+        animation: rotate 1s linear infinite;
+        margin-bottom: 10px;
+      }
+
+      /* Newsletter heading */
+      .newsletter h3 {
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        margin: 0 auto;
+        letter-spacing: 0.1em;
+        border-right: 3px solid var(--accent-color);
+        animation:
+          typing 3.5s steps(30, end),
+          blink 1s step-end infinite;
+        animation-fill-mode: forwards;
+      }
+
+      nav a {
+        animation: slideInRight 0.5s ease-out forwards;
+        animation-delay: calc(0.1s * var(--animation-order, 0));
+        position: relative;
+      }
+
+      nav a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: var(--accent-color);
+        transform-origin: bottom right;
+        transition: transform 0.3s ease-out;
+      }
+
+      nav a:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+      }
+
+      /* Enhanced form elements */
+      #newsletter-form input {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(138, 43, 226, 0.3);
+      }
+
+      #newsletter-form input:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        transform: translateY(-5px) scale(1.02);
+      }
+
+      #newsletter-form button {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      #newsletter-form button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: all 0.5s;
+        z-index: -1;
+      }
+
+      #newsletter-form button:hover::before {
+        left: 100%;
+      }
+
+      #newsletter-form button:hover {
+        background: var(--accent-color-hover);
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 10px 20px rgba(138, 43, 226, 0.4);
+      }
+
+      @media (max-width: 700px) {
+        html, body {
+          font-size: 1.05em;
+        }
+
+        main {
+          padding: 36px 16px 36px 16px;
+          margin-top: 80px; /* Add space for fixed header */
+        }
+
+        h1 {
+          font-size: 1.5em;
+          line-height: 1.4;
+        }
+
+        .site-title {
+          font-size: 1.6em;
+          padding-top: 18px;
+        }
+
+        nav {
+          gap: 20px;
+          font-size: 1.05em;
+          flex-wrap: wrap;
+          justify-content: center;
+          padding: 0 10px;
+          margin-bottom: 10px;
+        }
+
+        nav a {
+          padding: 8px 0;
+          margin-bottom: 5px;
+        }
+
+        .newsletter {
+          padding: 24px 16px;
+          margin-top: 36px;
+          width: 100%; /* Ensure full width on mobile */
+        }
+
+        #newsletter-form input[type="text"],
+        #newsletter-form input[type="email"] {
+          max-width: 100%;
+          padding: 14px 16px;
+          font-size: 1.05em;
+        }
+
+        #newsletter-form button {
+          padding: 14px 32px;
+          font-size: 1.15em;
+          width: 100%;
+          max-width: 320px;
+        }
+
+        #theme-toggle {
+          top: 12px;
+          right: 12px;
+          font-size: 1.6em;
+        }
+
+        /* Ensure header doesn't overlap content */
+        .fade-header {
+          background: rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(5px);
+          padding: 10px 0;
+        }
+      }
+
+      /* Small mobile devices */
+      @media (max-width: 480px) {
+        html, body {
+          font-size: 1em;
+        }
+
+        main {
+          padding-top: 100px; /* More space for header on small devices */
+        }
+
+        .site-title {
+          font-size: 1.5em;
+        }
+
+        nav {
+          gap: 12px;
+          margin-top: 12px;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        nav a {
+          font-size: 0.95em;
+          padding: 6px 8px;
+          margin: 2px;
+        }
+
+        h1 {
+          font-size: 1.4em;
+          margin-top: 0;
+        }
+
+        .newsletter h3 {
+          font-size: 1.3em;
+        }
+
+        #newsletter-form button {
+          font-size: 1.1em;
+          padding: 12px 24px;
+        }
+      }
+      footer {
+        width: 100%;
+        text-align: center;
+        color: #aaa;
+        font-size: 1em;
+        padding: 32px 0 18px 0;
+        font-family: 'Georgia', serif;
+        letter-spacing: 0.03em;
+      }
+    </style>
+</head>
+<body>
+    <!-- Particle background -->
+    <div class="particles" id="particles"></div>
+
+    <button id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+        <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="display: inline;">
+            <path d="M21.75 15.5a9 9 0 01-11.19-11.19 7 7 0 109.19 9.19 8.94 8.94 0 011.99 1z"/>
+        </svg>
+        <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="display: none;">
+            <path d="M12 4.75a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0112 4.75zm5.657 1.657a.75.75 0 011.06 1.06l-1.06 1.06a.75.75 0 11-1.06-1.06l1.06-1.06zM18.25 12a.75.75 0 01.75.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm-6.25 6.25a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zm-5.657-1.657a.75.75 0 01-1.06-1.06l1.06-1.06a.75.75 0 111.06 1.06l-1.06 1.06zM5.75 12a.75.75 0 01-.75-.75H3.5a.75.75 0 010-1.5h1.5a.75.75 0 01.75.75zm6.25-6.25a.75.75 0 01-.75-.75V3.5a.75.75 0 011.5 0v1.5a.75.75 0 01-.75.75zm0 12a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z"/>
+        </svg>
+    </button>
+    <header id="fade-header" class="fade-header">
+        <div class="site-title">sahxiety</div>
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="posts.html">Posts</a>
+            <a href="newsletter.html">Newsletter</a>
+            <a href="contact.html" title="Contact Sahil">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Why Did I Create This?</h1>
+        <p>
+            So, you might be wondering where the name “sahxiety” comes from. It’s actually a portmanteau-a blend of my name, <strong>Sahil</strong>, and the word <strong>anxiety</strong>. I thought it perfectly captures both a part of who I am and the thoughts I want to share.
+        </p>
+        <p>
+            On this blog, you’ll find everything from my failed projects to late-night existential musings, and pretty much everything in between.
+        </p>
+        <p>
+            I plan to write here weekly or monthly-not as a professional, but as someone who enjoys sharing, reflecting, and sometimes just venting.
+        </p>
+        <p>
+            Thanks for stopping by! See you in the next post.
+        </p>
+        <p class="signature">Sahil</p>
+
+        <section class="recent-posts" id="recent-posts" aria-label="Recent posts">
+            <h2>Recent Posts</h2>
+            <ul class="posts-list" id="recent-posts-list">
+                <!-- Recent posts will be loaded dynamically -->
+                <div class="posts-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading recent posts...</p>
+                </div>
+            </ul>
+        </section>
+
+        <section class="newsletter" id="newsletter" aria-label="Newsletter subscription">
+            <h3>Join the Newsletter</h3>
+            <div class="newsletter-desc">
+                Get personal updates, essays, and more-direct to your inbox.<br>
+                <b>No spam. Unsubscribe anytime.</b>
+            </div>
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+            <form id="newsletter-form" action="https://docs.google.com/forms/d/e/1FAIpQLSe14a0S7pXLlULmM7DUqpUQ6kurhkV7lMmHWqzebMKIU31-MQ/formResponse" method="post" target="hidden_iframe" autocomplete="off" onsubmit="submitted=true;">
+                <input type="text" id="name" name="entry.1444035834" placeholder="Your name" required>
+                <input type="email" id="email" name="entry.1614046507" placeholder="Your email" required>
+                <button type="submit">Subscribe</button>
+                <div id="newsletter-message"></div>
+            </form>
+        </section>
+    </main>
+    <footer>
+        © 2025 Sahil Yadav. All rights reserved.
+    </footer>
+    <script>
+      // Create particle background
+      function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = window.innerWidth < 768 ? 15 : 30;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+
+          // Random position
+          const posX = Math.random() * 100;
+          const posY = Math.random() * 100;
+          particle.style.left = `${posX}%`;
+          particle.style.top = `${posY}%`;
+
+          // Random size
+          const size = Math.random() * 8 + 2;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+
+          // Random opacity
+          particle.style.opacity = Math.random() * 0.5 + 0.1;
+
+          // Random animation duration and delay
+          const duration = Math.random() * 20 + 10;
+          const delay = Math.random() * 5;
+          particle.style.animation = `float ${duration}s infinite ease-in-out ${delay}s`;
+
+          particlesContainer.appendChild(particle);
+        }
+      }
+
+      // Theme toggle functionality
+      const toggleBtn = document.getElementById('theme-toggle');
+      const body = document.body;
+      const iconMoon = document.getElementById('icon-moon');
+      const iconSun = document.getElementById('icon-sun');
+
+      function updateIcons() {
+        if (body.classList.contains('light-mode')) {
+          iconMoon.style.display = 'none';
+          iconSun.style.display = 'inline';
+        } else {
+          iconMoon.style.display = 'inline';
+          iconSun.style.display = 'none';
+        }
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        updateIcons();
+      });
+
+      updateIcons();
+
+      // Header fade on scroll
+      let lastScroll = 0;
+      const header = document.getElementById('fade-header');
+
+      window.addEventListener('scroll', function() {
+        const currentScroll = window.pageYOffset;
+        if (currentScroll > 60) {
+          header.classList.add('faded');
+        } else {
+          header.classList.remove('faded');
+        }
+        lastScroll = currentScroll;
+      });
+
+      // Set animation order for nav links
+      document.querySelectorAll('nav a').forEach((link, index) => {
+        link.style.setProperty('--animation-order', index);
+      });
+
+      // Set animation order for paragraphs
+      document.querySelectorAll('p').forEach((paragraph, index) => {
+        paragraph.style.setProperty('--animation-order', index + 1);
+      });
+
+      // Add enhanced form interactions
+      const form = document.getElementById('newsletter-form');
+      const submitButton = form.querySelector('button[type="submit"]');
+      const inputs = form.querySelectorAll('input:not([type="hidden"])');
+      const messageBox = document.getElementById('newsletter-message');
+
+      // Variable to track form submission
+      var submitted = false;
+
+      // Add 3D hover effect to button
+      submitButton.addEventListener('mouseenter', function() {
+        this.style.animation = 'pulse 1s infinite ease-in-out';
+        this.style.transform = 'translateY(-5px) scale(1.05)';
+        this.style.boxShadow = '0 10px 20px rgba(138, 43, 226, 0.4)';
+      });
+
+      submitButton.addEventListener('mouseleave', function() {
+        this.style.animation = '';
+        this.style.transform = '';
+        this.style.boxShadow = '';
+      });
+
+      // Handle form submission
+      form.addEventListener('submit', function() {
+        // Show submission animation
+        submitButton.style.animation = 'pulse 0.7s infinite ease-in-out';
+        submitButton.disabled = true;
+        messageBox.textContent = 'Submitting...';
+        messageBox.style.color = '#aaa';
+        messageBox.style.animation = 'fadeIn 0.3s forwards';
+
+        // Set a timeout to show success message after form submission
+        setTimeout(function() {
+          // Show success message
+          messageBox.textContent = 'Thank you for subscribing!';
+          messageBox.style.color = '#00e054';
+          messageBox.style.animation = 'fadeIn 0.5s forwards';
+
+          // Reset form
+          form.reset();
+
+          // Reset button
+          submitButton.style.animation = '';
+          submitButton.disabled = false;
+
+          // Reset submission flag
+          submitted = false;
+        }, 2000);
+      });
+
+      // Add focus animations to form inputs with 3D effect
+      inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.style.transition = 'all 0.3s ease';
+          this.style.transform = 'translateY(-5px) scale(1.02)';
+          this.style.boxShadow = '0 8px 15px rgba(138, 43, 226, 0.3)';
+        });
+
+        input.addEventListener('blur', function() {
+          this.style.transform = 'translateY(0) scale(1)';
+          this.style.boxShadow = 'none';
+        });
+      });
+
+      // Add reveal animations on scroll
+      function revealOnScroll() {
+        const elements = document.querySelectorAll('.newsletter, h1, p, .signature');
+
+        elements.forEach(element => {
+          const elementTop = element.getBoundingClientRect().top;
+          const elementVisible = 150;
+
+          if (elementTop < window.innerHeight - elementVisible) {
+            element.style.visibility = 'visible';
+            element.style.opacity = '1';
+          }
+        });
+      }
+
+      // Function to format a date with proper ordinal suffix
+      function formatDateWithOrdinal(date) {
+        const day = date.getDate();
+        const month = date.toLocaleString('en-US', { month: 'long' });
+        const year = date.getFullYear();
+
+        const ordinalSuffix = (day) => {
+          if (day > 3 && day < 21) return 'th';
+          switch (day % 10) {
+            case 1: return 'st';
+            case 2: return 'nd';
+            case 3: return 'rd';
+            default: return 'th';
+          }
+        };
+
+        return `${day}${ordinalSuffix(day)} ${month} ${year}`;
+      }
+
+      // Load recent posts from JSON
+      async function loadRecentPosts() {
+        try {
+          const response = await fetch('posts.json');
+          const posts = await response.json();
+
+          const recentPostsList = document.getElementById('recent-posts-list');
+          recentPostsList.innerHTML = ''; // Clear loading indicator
+
+          // Show the homepage post in the recent posts section
+          const homepagePost = posts.find(post => post.isHomepage);
+
+          if (homepagePost) {
+            const li = document.createElement('li');
+            li.style.animation = 'flipIn 0.8s ease-out forwards';
+
+            const postDate = new Date(homepagePost.date);
+
+            // Format the date with ordinal suffix
+            const formattedDate = formatDateWithOrdinal(postDate);
+
+            // Create post link
+            const link = document.createElement('a');
+            link.href = homepagePost.content;
+            link.textContent = homepagePost.title;
+
+            // Create post date with clock icon
+            const dateSpan = document.createElement('span');
+            dateSpan.className = 'post-date';
+
+            const clockIcon = document.createElement('div');
+            clockIcon.className = 'clock';
+            clockIcon.style.width = '16px';
+            clockIcon.style.height = '16px';
+            clockIcon.style.marginRight = '8px';
+            clockIcon.style.border = '2px solid var(--accent-color)';
+            clockIcon.style.borderRadius = '50%';
+            clockIcon.style.position = 'relative';
+            clockIcon.style.display = 'inline-block';
+            clockIcon.style.background = 'rgba(138, 43, 226, 0.1)';
+            clockIcon.style.boxShadow = '0 0 10px rgba(138, 43, 226, 0.3)';
+
+            const hourHand = document.createElement('div');
+            hourHand.style.position = 'absolute';
+            hourHand.style.background = 'var(--accent-color)';
+            hourHand.style.transformOrigin = 'bottom center';
+            hourHand.style.top = '50%';
+            hourHand.style.left = '50%';
+            hourHand.style.width = '2px';
+            hourHand.style.height = '4px';
+            hourHand.style.marginLeft = '-1px';
+            hourHand.style.marginTop = '-4px';
+            hourHand.style.borderRadius = '10px';
+
+            const minuteHand = document.createElement('div');
+            minuteHand.style.position = 'absolute';
+            minuteHand.style.background = 'var(--accent-color)';
+            minuteHand.style.transformOrigin = 'bottom center';
+            minuteHand.style.top = '50%';
+            minuteHand.style.left = '50%';
+            minuteHand.style.width = '1px';
+            minuteHand.style.height = '5px';
+            minuteHand.style.marginLeft = '-0.5px';
+            minuteHand.style.marginTop = '-5px';
+            minuteHand.style.borderRadius = '10px';
+
+            // Set clock hands to match post time
+            const hours = postDate.getHours() % 12;
+            const minutes = postDate.getMinutes();
+
+            hourHand.style.transform = `rotate(${(hours * 30) + (minutes * 0.5)}deg)`;
+            minuteHand.style.transform = `rotate(${minutes * 6}deg)`;
+
+            clockIcon.appendChild(hourHand);
+            clockIcon.appendChild(minuteHand);
+
+            dateSpan.appendChild(clockIcon);
+            dateSpan.appendChild(document.createTextNode(formattedDate));
+
+            // Create post excerpt
+            const excerptP = document.createElement('p');
+            excerptP.className = 'post-excerpt';
+            excerptP.textContent = homepagePost.excerpt;
+
+            // Add elements to list item
+            li.appendChild(link);
+            li.appendChild(dateSpan);
+            li.appendChild(excerptP);
+
+            recentPostsList.appendChild(li);
+          }
+
+          // Add floating animation to the recent posts section
+          const recentPostsSection = document.querySelector('.recent-posts');
+          recentPostsSection.style.animation = 'float 8s infinite ease-in-out, gradientBG 15s ease infinite';
+
+        } catch (error) {
+          console.error('Error loading recent posts:', error);
+          const recentPostsList = document.getElementById('recent-posts-list');
+          recentPostsList.innerHTML = '<div class="posts-loading">Failed to load recent posts. Please try again later.</div>';
+        }
+      }
+
+      // Initialize everything when DOM is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        createParticles();
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Run once on page load
+
+        // Load recent posts
+        loadRecentPosts();
+
+        // Add floating animation to the newsletter section
+        const newsletterSection = document.querySelector('.newsletter');
+        setTimeout(() => {
+          newsletterSection.style.animation = 'float 6s infinite ease-in-out, gradientBG 15s ease infinite';
+        }, 5000); // Start floating after initial animations
+      });
+    </script>
+</body>
+</html>
