@@ -77,6 +77,7 @@
       position: relative;
       display: flex;
       justify-content: center;
+      align-items: center;
       flex-wrap: wrap; /* Allow wrapping on small screens */
       z-index: 5; /* Ensure it's above other elements */
     }
@@ -94,7 +95,9 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       backdrop-filter: blur(4px);
       transition: all 0.3s ease;
-      display: inline-block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       min-width: 250px; /* Reduced min-width for mobile */
       max-width: 100%;
       overflow: hidden;
@@ -114,8 +117,10 @@
       align-items: center;
       justify-content: center;
       margin-left: 10px;
+      margin-right: 10px;
       position: relative;
       flex-wrap: wrap; /* Allow wrapping on small screens */
+      vertical-align: middle;
     }
 
     .clock {
@@ -618,9 +623,15 @@
 
       main {
         padding: 20px 16px 36px 16px; /* Reduced top padding */
-        margin-top: 120px; /* Adjusted space for fixed header and clock */
+        margin-top: 150px; /* Adjusted space for fixed header and clock */
         width: 100%;
         box-sizing: border-box;
+      }
+
+      /* Ensure clock is visible on all screen sizes */
+      .clock-container {
+        display: inline-flex !important;
+        margin: 5px 10px;
       }
 
       h1 {
@@ -861,7 +872,14 @@
       <a href="contact.html" title="Contact Sahil">Contact</a>
     </nav>
     <div class="today-date-container">
-      <div class="today-date" id="today-date"></div>
+      <div class="today-date" id="today-date">
+        <div class="clock-container">
+          <div class="clock">
+            <div class="clock-hour"></div>
+            <div class="clock-minute"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
   <main>
@@ -1033,65 +1051,75 @@
 
       // Split the date time string into parts
       const dateElement = document.getElementById('today-date');
-      dateElement.innerHTML = ''; // Clear previous content
 
-      // Create animated clock
-      const clockContainer = document.createElement('div');
-      clockContainer.className = 'clock-container';
+      // Keep the clock container but clear the rest
+      const clockContainer = dateElement.querySelector('.clock-container');
+      const clock = clockContainer.querySelector('.clock');
+      const hourHand = clock.querySelector('.clock-hour');
+      const minuteHand = clock.querySelector('.clock-minute');
 
-      const clock = document.createElement('div');
-      clock.className = 'clock';
+      // Remove all elements except the clock container
+      while (dateElement.lastChild) {
+        if (dateElement.lastChild !== clockContainer) {
+          dateElement.removeChild(dateElement.lastChild);
+        } else {
+          break;
+        }
+      }
 
-      const hourHand = document.createElement('div');
-      hourHand.className = 'clock-hour';
+      // Add clock face details for more visual appeal if not already present
+      let clockFace = clock.querySelector('.clock-face');
+      if (!clockFace) {
+        clockFace = document.createElement('div');
+        clockFace.className = 'clock-face';
+        clockFace.style.position = 'absolute';
+        clockFace.style.width = '6px';
+        clockFace.style.height = '6px';
+        clockFace.style.borderRadius = '50%';
+        clockFace.style.background = 'white';
+        clockFace.style.top = '50%';
+        clockFace.style.left = '50%';
+        clockFace.style.transform = 'translate(-50%, -50%)';
+        clockFace.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.8)';
+        clockFace.style.zIndex = '2';
+        clock.appendChild(clockFace);
+      }
 
-      const minuteHand = document.createElement('div');
-      minuteHand.className = 'clock-minute';
+      // Add numerical markings (1-12) if not already present
+      if (!clock.querySelector('.clock-number')) {
+        for (let i = 1; i <= 12; i++) {
+          const number = document.createElement('div');
+          number.className = 'clock-number';
+          number.style.position = 'absolute';
+          number.style.width = '100%';
+          number.style.height = '100%';
+          number.style.textAlign = 'center';
 
-      // Add clock face details for more visual appeal
-      const clockFace = document.createElement('div');
-      clockFace.style.position = 'absolute';
-      clockFace.style.width = '6px';
-      clockFace.style.height = '6px';
-      clockFace.style.borderRadius = '50%';
-      clockFace.style.background = 'white';
-      clockFace.style.top = '50%';
-      clockFace.style.left = '50%';
-      clockFace.style.transform = 'translate(-50%, -50%)';
-      clockFace.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.8)';
-      clockFace.style.zIndex = '2';
+          // Get clock width for responsive sizing
+          const clockWidth = clock.offsetWidth || 60;
 
-      // Add numerical markings (1-12)
-      for (let i = 1; i <= 12; i++) {
-        const number = document.createElement('div');
-        number.style.position = 'absolute';
-        number.style.width = '100%';
-        number.style.height = '100%';
-        number.style.textAlign = 'center';
-        // Get clock width for responsive sizing
-        const clockWidth = clock.offsetWidth || 75;
+          // Responsive font size based on clock width
+          const fontSize = Math.max(8, Math.floor(clockWidth / 8)); // Min 8px, scales with clock
+          number.style.fontSize = `${fontSize}px`;
+          number.style.fontWeight = 'bold';
+          number.style.color = 'var(--accent-color)';
 
-        // Responsive font size based on clock width
-        const fontSize = Math.max(8, Math.floor(clockWidth / 8)); // Min 8px, scales with clock
-        number.style.fontSize = `${fontSize}px`;
-        number.style.fontWeight = 'bold';
-        number.style.color = 'var(--accent-color)';
+          // Calculate position for each number - responsive radius based on clock size
+          const angle = (i * 30) * (Math.PI / 180); // 30 degrees per hour
+          const radius = clockWidth * 0.35; // Scale radius based on clock size (35% of clock width)
+          const x = Math.sin(angle) * radius;
+          const y = -Math.cos(angle) * radius;
 
-        // Calculate position for each number - responsive radius based on clock size
-        const angle = (i * 30) * (Math.PI / 180); // 30 degrees per hour
-        const radius = clockWidth * 0.35; // Scale radius based on clock size (35% of clock width)
-        const x = Math.sin(angle) * radius;
-        const y = -Math.cos(angle) * radius;
+          const numberText = document.createElement('span');
+          numberText.textContent = i;
+          numberText.style.position = 'absolute';
+          numberText.style.left = `calc(50% + ${x}px)`;
+          numberText.style.top = `calc(50% + ${y}px)`;
+          numberText.style.transform = 'translate(-50%, -50%)';
 
-        const numberText = document.createElement('span');
-        numberText.textContent = i;
-        numberText.style.position = 'absolute';
-        numberText.style.left = `calc(50% + ${x}px)`;
-        numberText.style.top = `calc(50% + ${y}px)`;
-        numberText.style.transform = 'translate(-50%, -50%)';
-
-        number.appendChild(numberText);
-        clock.appendChild(number);
+          number.appendChild(numberText);
+          clock.appendChild(number);
+        }
       }
 
       // Set clock hands position with smooth animation for real-time
@@ -1106,11 +1134,6 @@
 
       hourHand.style.transform = `rotate(${hourAngle}deg)`;
       minuteHand.style.transform = `rotate(${minuteAngle}deg)`;
-
-      clock.appendChild(hourHand);
-      clock.appendChild(minuteHand);
-      clock.appendChild(clockFace);
-      clockContainer.appendChild(clock);
 
       // Create date parts with better styling (no animations)
       const parts = dateTimeStr.split(/([,:])/g);
@@ -1129,9 +1152,6 @@
           dateElement.appendChild(span);
         }
       });
-
-      // Add the clock at the beginning
-      dateElement.insertBefore(clockContainer, dateElement.firstChild);
     }
 
     updateDateTime();
