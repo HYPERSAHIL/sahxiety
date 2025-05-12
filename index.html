@@ -74,11 +74,12 @@
         font-weight: 700;
         letter-spacing: 1px;
         margin: 0;
-        padding: 10px 0 0 0; /* Reduced padding */
+        padding: 15px 0 10px 0; /* Increased padding */
         color: var(--color-text-dark);
         text-align: center;
         transition: color var(--transition-speed);
         line-height: 1.1; /* Tighter line height */
+        width: 100%;
       }
       body.light-mode .site-title {
         color: var(--color-text-light);
@@ -136,7 +137,7 @@
         max-width: 680px;
         width: 100%;
         margin: 0 auto;
-        padding: 90px 32px 48px 32px; /* Further increased top padding to account for header */
+        padding: 120px 32px 48px 32px; /* Increased top padding to account for header */
         animation: fadeIn 0.5s ease-out; /* Added fade-in animation */
         position: relative; /* Ensure proper stacking */
         z-index: 1; /* Lower than header */
@@ -778,55 +779,57 @@
 
         main {
           padding-top: 0; /* Start content from the top when header is hidden */
-          padding-left: 10px;
-          padding-right: 10px;
-          margin-top: 80px; /* Add margin to account for header height */
+          padding-left: 15px;
+          padding-right: 15px;
+          margin-top: 120px; /* Increased margin to account for header height */
         }
 
         .site-title {
           font-size: 1.8em; /* Larger font for better visibility */
-          padding: 2px 0 0 0; /* Minimal padding */
+          padding: 15px 0 10px 0; /* Increased padding */
           margin: 0;
-          text-align: left; /* Align to the left as requested */
-          padding-left: 10px; /* Add some padding on the left */
+          text-align: center; /* Center alignment */
+          width: 100%;
         }
 
         .fade-header {
-          max-height: 90px; /* Increased max height to fit all nav items */
+          max-height: 150px; /* Increased max height to fit all nav items */
           display: flex;
           flex-direction: column;
-          align-items: flex-start; /* Align items to the left */
+          align-items: center; /* Center items */
+          padding: 5px 0;
         }
 
         nav {
-          gap: 8px; /* Increased gap for better spacing */
-          margin: 5px 0 5px 0; /* Slightly increased margins */
+          gap: 12px; /* Increased gap for better spacing */
+          margin: 10px 0; /* Increased margins */
           flex-direction: row;
           flex-wrap: wrap;
-          justify-content: flex-start; /* Align to the left */
-          padding: 0 10px; /* Add padding on the sides */
+          justify-content: center; /* Center alignment */
+          padding: 0 15px; /* Increased padding on the sides */
           width: 100%;
           display: flex;
         }
 
         nav a {
-          font-size: 1.1em; /* Increased font size */
-          padding: 5px 10px; /* Increased padding for better touch targets */
-          margin: 2px; /* Small margin between items */
+          font-size: 1.2em; /* Increased font size */
+          padding: 8px 15px; /* Increased padding for better touch targets */
+          margin: 3px; /* Increased margin between items */
           border-radius: 4px;
           background: rgba(138, 43, 226, 0.05);
-          line-height: 1.2; /* Slightly increased line height */
+          line-height: 1.3; /* Increased line height */
           display: inline-block; /* Ensure proper display */
         }
 
         h1 {
-          font-size: 1.3em;
-          margin-top: 0;
-          margin-bottom: 12px; /* Further reduced margin */
+          font-size: 1.5em;
+          margin-top: 20px;
+          margin-bottom: 20px;
         }
 
         p {
-          margin-bottom: 1.2em; /* Reduced paragraph spacing */
+          margin-bottom: 20px;
+          line-height: 1.8;
         }
 
         .newsletter h3 {
@@ -1029,7 +1032,7 @@
 
           // Adjust main content padding when header is hidden
           if (window.innerWidth <= 480) {
-            document.querySelector('main').style.paddingTop = '0';
+            document.querySelector('main').style.paddingTop = '20px';
           }
         } else {
           header.classList.remove('faded');
@@ -1037,7 +1040,7 @@
           // Restore main content padding when header is visible
           if (window.innerWidth <= 480) {
             document.querySelector('main').style.paddingTop = '0';
-            document.querySelector('main').style.marginTop = '80px';
+            document.querySelector('main').style.marginTop = '120px';
           }
         }
 
@@ -1076,7 +1079,7 @@
 
         // Ensure content is properly positioned on page load
         if (window.innerWidth <= 480) {
-          document.querySelector('main').style.marginTop = '80px';
+          document.querySelector('main').style.marginTop = '120px';
         }
       });
 
