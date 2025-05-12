@@ -46,14 +46,19 @@
       }
       .fade-header {
         width: 100%;
-        background: transparent;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
         transition: opacity 0.4s;
         opacity: 1;
-        position: relative;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
         z-index: 10;
+        padding: 10px 0;
       }
       .fade-header.faded {
-        opacity: 0;
+        opacity: 0.7;
         pointer-events: none;
       }
       .site-title {
@@ -651,8 +656,8 @@
         }
 
         main {
-          padding: 20px 16px 36px 16px; /* Reduced top padding */
-          margin-top: 80px; /* Reduced space for fixed header */
+          padding: 20px 16px 36px 16px;
+          margin-top: 100px; /* Increased space for fixed header */
           width: 100%;
           box-sizing: border-box;
         }
@@ -662,6 +667,7 @@
           line-height: 1.4;
           text-align: center;
           margin-top: 0; /* Remove top margin */
+          margin-bottom: 15px; /* Reduced bottom margin */
         }
 
         .site-title {
@@ -677,9 +683,6 @@
           flex-direction: column;
           align-items: center;
           padding-bottom: 8px; /* Reduced padding */
-          background: rgba(0, 0, 0, 0.8);
-          backdrop-filter: blur(5px);
-          padding-top: 8px; /* Reduced padding */
         }
 
         nav {
@@ -688,18 +691,20 @@
           flex-wrap: wrap;
           justify-content: center;
           padding: 0 10px;
-          margin-bottom: 0; /* Removed bottom margin */
+          margin: 5px 0 0 0; /* Adjusted margin */
           width: 100%;
         }
 
         nav a {
-          padding: 6px 0; /* Reduced padding */
+          padding: 6px 8px; /* Added horizontal padding */
           margin-bottom: 0; /* Removed bottom margin */
+          border-radius: 4px;
+          background: rgba(138, 43, 226, 0.05);
         }
 
         .newsletter {
           padding: 24px 16px;
-          margin-top: 36px;
+          margin-top: 30px; /* Reduced top margin */
           width: 100%; /* Ensure full width on mobile */
           box-sizing: border-box;
         }
@@ -736,12 +741,12 @@
 
         .recent-posts {
           padding: 20px 15px;
-          margin: 30px 0;
+          margin: 25px 0; /* Reduced margin */
         }
 
         .signature {
           text-align: center;
-          margin: 30px auto;
+          margin: 25px auto; /* Reduced margin */
         }
       }
 
@@ -752,7 +757,7 @@
         }
 
         main {
-          padding-top: 90px; /* Reduced space for header on small devices */
+          padding-top: 100px; /* Adjusted space for header on small devices */
           padding-left: 10px;
           padding-right: 10px;
         }
@@ -783,7 +788,11 @@
         h1 {
           font-size: 1.3em;
           margin-top: 0;
-          margin-bottom: 15px;
+          margin-bottom: 12px; /* Further reduced margin */
+        }
+
+        p {
+          margin-bottom: 1.2em; /* Reduced paragraph spacing */
         }
 
         .newsletter h3 {
@@ -800,11 +809,12 @@
 
         .recent-posts {
           padding: 15px 10px;
+          margin-top: 20px; /* Reduced top margin */
         }
 
         .posts-list li {
           padding: 12px;
-          margin-bottom: 15px;
+          margin-bottom: 12px; /* Reduced margin */
         }
 
         .posts-list a {
@@ -815,6 +825,16 @@
         footer {
           padding: 15px 10px;
           font-size: 0.9em;
+        }
+
+        /* Optimize animations for mobile */
+        .newsletter, .posts-list li, .signature {
+          transition: all 0.2s ease; /* Faster transitions */
+        }
+
+        /* Reduce hover effects on mobile */
+        .posts-list li:hover {
+          transform: translateY(-3px); /* Smaller transform */
         }
       }
       footer {

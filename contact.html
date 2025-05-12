@@ -154,6 +154,8 @@
       backdrop-filter: blur(4px);
       border: 1px solid rgba(138, 43, 226, 0.1);
       margin-bottom: 20px;
+      position: relative; /* Added for proper positioning */
+      z-index: 1; /* Ensure it's above other elements */
     }
 
     .mail-label {
@@ -189,12 +191,15 @@
       display: block;
       text-decoration: none;
       transition: all 0.3s ease;
-      margin-top: 10px;
+      margin-top: 5px; /* Reduced margin */
       padding: 8px 15px;
       background: rgba(138, 43, 226, 0.08);
       border-radius: 8px;
       border: 1px solid rgba(138, 43, 226, 0.1);
       width: 100%;
+      box-sizing: border-box; /* Ensure padding is included in width */
+      position: relative; /* Added for proper positioning */
+      z-index: 2; /* Ensure it's above other elements */
     }
 
     .email-box:hover, .email-box:focus {
@@ -220,12 +225,16 @@
       font-weight: 700;
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(0,0,0,0.6);
-      transition: background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.15s;
+      transition: all 0.3s ease; /* Simplified transition */
       text-decoration: none;
       min-width: 200px;
       margin: 10px 0;
       position: relative;
       overflow: visible;
+      width: 100%; /* Full width on mobile */
+      max-width: 500px; /* Match contact section width */
+      box-sizing: border-box; /* Include padding in width */
+      z-index: 1; /* Ensure proper stacking */
     }
 
     .contact-btn:hover, .contact-btn:focus {
@@ -258,6 +267,8 @@
     /* Instagram button specific styles */
     .instagram-btn {
       border-color: #e4405f;
+      opacity: 1; /* Ensure it's fully visible */
+      visibility: visible; /* Ensure it's visible */
     }
 
     .ig-dot.dot-pink { background: #e4405f; }
@@ -267,6 +278,8 @@
     .instagram-btn:hover, .instagram-btn:focus {
       color: #e4405f;
       border-color: #e4405f;
+      opacity: 1; /* Ensure it remains visible on hover */
+      visibility: visible; /* Ensure it remains visible on hover */
     }
 
     .instagram-btn:hover .ig-dot.dot-pink { background: #ff5a7a; }
@@ -554,8 +567,8 @@
       }
 
       main {
-        padding: 80px 16px 36px 16px; /* Reduced top padding for fixed header */
-        gap: 20px; /* Reduced gap */
+        padding: 100px 16px 36px 16px; /* Adjusted top padding for fixed header */
+        gap: 15px; /* Reduced gap */
         width: 100%;
         box-sizing: border-box;
       }
@@ -564,7 +577,7 @@
       .fade-header {
         background: rgba(0, 0, 0, 0.8);
         backdrop-filter: blur(5px);
-        padding: 8px 0; /* Reduced padding */
+        padding: 10px 0 5px 0; /* Adjusted padding */
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -584,20 +597,22 @@
         flex-wrap: wrap;
         justify-content: center;
         padding: 0 10px;
-        margin-bottom: 0; /* Removed bottom margin */
+        margin: 5px 0; /* Adjusted margins */
         width: 100%;
       }
 
       nav a {
-        padding: 6px 0; /* Reduced padding */
-        margin-bottom: 0; /* Removed bottom margin */
+        padding: 6px 8px; /* Added horizontal padding */
+        margin: 0; /* Removed margins */
+        border-radius: 4px;
+        background: rgba(138, 43, 226, 0.05);
       }
 
       .contact-section {
         width: 100%;
         padding: 15px;
         box-sizing: border-box;
-        margin-bottom: 15px;
+        margin-bottom: 10px; /* Reduced margin */
       }
 
       .mail-label {
@@ -609,55 +624,39 @@
       }
 
       .email-box {
-        font-size: 1.2em;
+        font-size: 1.1em; /* Reduced font size */
         text-align: center;
-        margin-top: 15px;
+        margin-top: 5px; /* Reduced margin */
         width: 100%;
         box-sizing: border-box;
         word-break: break-all;
         padding: 10px;
       }
 
-      .social-buttons {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        gap: 15px;
-      }
-
-      .film-journal-btn {
+      .film-journal-btn, .instagram-btn {
         font-size: 1em;
-        padding: 8px 16px 8px 12px;
+        padding: 8px 16px;
         width: 100%;
-        max-width: 250px;
+        max-width: 100%; /* Full width */
         justify-content: center;
         margin: 5px 0;
+        box-sizing: border-box;
       }
 
-      .film-journal-btn .lb-dot {
-        width: 8px;
-        height: 8px;
-      }
-
-      .instagram-btn {
-        width: 100%;
-        max-width: 250px;
-        font-size: 1em;
-        padding: 10px 20px;
-        justify-content: center;
-        margin: 5px 0;
-      }
-
-      .instagram-btn svg {
-        width: 20px;
-        height: 20px;
+      .dot {
+        width: 6px; /* Smaller dots */
+        height: 6px; /* Smaller dots */
       }
 
       #theme-toggle {
         top: 12px;
         right: 12px;
         font-size: 1.6em;
+      }
+
+      /* Optimize animations for mobile */
+      .contact-section, .mail-label, .email-box, .instagram-btn, .film-journal-btn {
+        transition: all 0.2s ease; /* Faster transitions */
       }
     }
 
@@ -668,8 +667,8 @@
       }
 
       main {
-        padding-top: 80px; /* Reduced space for header on small devices */
-        gap: 12px; /* Reduced gap */
+        padding-top: 100px; /* Adjusted space for header on small devices */
+        gap: 10px; /* Further reduced gap */
         padding-left: 10px;
         padding-right: 10px;
       }
@@ -700,33 +699,46 @@
       .mail-label {
         font-size: 1.05em;
         padding: 6px 8px;
+        margin-bottom: 0; /* Removed margin */
       }
 
       .email-box {
-        font-size: 1em;
+        font-size: 0.95em; /* Further reduced font size */
         padding: 8px;
         word-break: break-all;
         background: rgba(138, 43, 226, 0.05);
         border-radius: 6px;
+        margin-top: 3px; /* Further reduced margin */
       }
 
       .instagram-btn, .film-journal-btn {
         width: 100%;
-        max-width: 220px;
+        max-width: 100%; /* Full width */
         justify-content: center;
-        margin: 6px 0;
+        margin: 5px 0; /* Reduced margin */
         font-size: 0.95em;
         padding: 8px 12px;
       }
 
       .contact-section {
-        margin-bottom: 10px;
-        padding: 12px;
+        margin-bottom: 8px; /* Further reduced margin */
+        padding: 10px; /* Reduced padding */
+      }
+
+      .dot {
+        width: 5px; /* Even smaller dots */
+        height: 5px; /* Even smaller dots */
+        margin-right: 1px; /* Reduced margin */
+      }
+
+      /* Reduce hover effects on mobile */
+      .instagram-btn:hover, .film-journal-btn:hover, .email-box:hover {
+        transform: translateY(-2px) !important; /* Smaller transform */
       }
 
       /* Adjust footer for small screens */
       footer {
-        padding: 15px 10px;
+        padding: 12px 10px; /* Reduced padding */
         font-size: 0.9em;
       }
     }

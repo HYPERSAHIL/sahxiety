@@ -24,7 +24,8 @@
     }
     .fade-header {
       width: 100%;
-      background: transparent;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
       transition: opacity 0.4s;
       opacity: 1;
       position: fixed;
@@ -32,7 +33,7 @@
       left: 0;
       right: 0;
       z-index: 10;
-      padding: 20px 0;
+      padding: 10px 0;
       text-align: center;
     }
     .fade-header.faded {
@@ -345,38 +346,39 @@
 
       .site-title {
         font-size: 1.6em;
-        padding-top: 18px;
+        padding-top: 12px; /* Reduced padding */
+        padding-bottom: 5px; /* Added bottom padding */
         text-align: center;
         width: 100%;
       }
 
       /* Ensure header doesn't overlap content */
       .fade-header {
-        background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(5px);
-        padding: 10px 0;
         display: flex;
         flex-direction: column;
         align-items: center;
+        padding: 10px 0 5px 0; /* Adjusted padding */
       }
 
       nav {
-        gap: 20px;
+        gap: 15px; /* Reduced gap */
         font-size: 1.05em;
         flex-wrap: wrap;
         justify-content: center;
         padding: 0 10px;
-        margin-bottom: 5px;
+        margin: 5px 0; /* Adjusted margins */
         width: 100%;
       }
 
       nav a {
-        padding: 8px 0;
-        margin-bottom: 5px;
+        padding: 6px 8px; /* Added horizontal padding */
+        margin: 0; /* Removed margins */
+        border-radius: 4px;
+        background: rgba(138, 43, 226, 0.05);
       }
 
       main {
-        padding: 80px 16px 36px 16px; /* Reduced top padding for fixed header */
+        padding: 100px 16px 36px 16px; /* Adjusted top padding for fixed header */
         width: 100%;
         box-sizing: border-box;
       }
@@ -422,6 +424,11 @@
         text-align: center;
         font-size: 1.5em;
       }
+
+      /* Optimize animations for mobile */
+      .newsletter, #newsletter-form input, #newsletter-form button {
+        transition: all 0.2s ease; /* Faster transitions */
+      }
     }
 
     /* Small mobile devices */
@@ -432,11 +439,13 @@
 
       .site-title {
         font-size: 1.5em;
+        padding-top: 10px;
+        padding-bottom: 4px;
       }
 
       nav {
-        gap: 8px;
-        margin-top: 10px;
+        gap: 6px; /* Reduced gap */
+        margin-top: 5px; /* Reduced top margin */
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
@@ -445,8 +454,8 @@
 
       nav a {
         font-size: 0.9em;
-        padding: 5px 6px;
-        margin: 2px;
+        padding: 4px 6px; /* Reduced padding */
+        margin: 1px; /* Reduced margin */
         border-radius: 4px;
         background: rgba(138, 43, 226, 0.05);
       }
@@ -456,6 +465,12 @@
         white-space: normal; /* Allow wrapping for small screens */
         border-right: none; /* Remove typing cursor on mobile */
         animation: fadeIn 300ms ease-out;
+        margin-bottom: 10px; /* Reduced margin */
+      }
+
+      .newsletter-desc {
+        font-size: 0.95em; /* Reduced font size */
+        margin-bottom: 15px; /* Reduced margin */
       }
 
       #newsletter-form button {
@@ -464,24 +479,31 @@
       }
 
       main {
-        padding-top: 80px; /* Reduced space for header on small devices */
+        padding-top: 100px; /* Adjusted space for header on small devices */
         padding-left: 10px;
         padding-right: 10px;
       }
 
       .newsletter {
-        padding: 20px 12px;
+        padding: 15px 12px; /* Reduced padding */
+        margin-top: 10px; /* Reduced margin */
       }
 
       #newsletter-form input[type="text"],
       #newsletter-form input[type="email"] {
         padding: 12px 14px;
         font-size: 1em;
+        margin-bottom: 10px; /* Reduced margin */
+      }
+
+      /* Reduce hover effects on mobile */
+      #newsletter-form input:focus, #newsletter-form button:hover {
+        transform: translateY(-3px) !important; /* Smaller transform */
       }
 
       /* Adjust footer for small screens */
       footer {
-        padding: 15px 10px;
+        padding: 12px 10px; /* Reduced padding */
         font-size: 0.9em;
       }
     }

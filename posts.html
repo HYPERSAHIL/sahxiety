@@ -68,6 +68,7 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap; /* Allow wrapping on small screens */
+      z-index: 5; /* Ensure it's above other elements */
     }
 
     .today-date {
@@ -84,11 +85,12 @@
       backdrop-filter: blur(4px);
       transition: all 0.3s ease;
       display: inline-block;
-      min-width: 300px;
+      min-width: 250px; /* Reduced min-width for mobile */
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: normal; /* Allow text to wrap on mobile */
+      margin: 0 5px; /* Added horizontal margin */
     }
 
     .today-date:hover {
@@ -103,16 +105,17 @@
       justify-content: center;
       margin-left: 10px;
       position: relative;
+      flex-wrap: wrap; /* Allow wrapping on small screens */
     }
 
     .clock {
-      width: 75px;
-      height: 75px;
+      width: 60px; /* Reduced size */
+      height: 60px; /* Reduced size */
       border-radius: 50%;
       border: 2px solid var(--accent-color);
       position: relative;
       display: inline-block;
-      margin-right: 15px;
+      margin: 10px 15px 10px 0; /* Added vertical margins */
       background: rgba(138, 43, 226, 0.1);
       box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
       transform-style: preserve-3d;
@@ -604,7 +607,7 @@
 
       main {
         padding: 20px 16px 36px 16px; /* Reduced top padding */
-        margin-top: 130px; /* Reduced space for fixed header and clock */
+        margin-top: 120px; /* Adjusted space for fixed header and clock */
         width: 100%;
         box-sizing: border-box;
       }
@@ -629,12 +632,13 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding-bottom: 8px; /* Reduced padding */
+        padding: 10px 0 5px 0; /* Adjusted padding */
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
       }
 
       .today-date-container {
-        margin-top: 5px; /* Reduced top margin */
-        margin-bottom: 5px; /* Reduced bottom margin */
+        margin: 5px 0; /* Reduced margins */
         width: 100%;
         display: flex;
         justify-content: center;
@@ -643,7 +647,7 @@
 
       .today-date {
         font-size: 0.9em;
-        margin-bottom: 5px; /* Reduced bottom margin */
+        margin-bottom: 0; /* Removed bottom margin */
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -655,7 +659,7 @@
       .clock {
         width: 45px;
         height: 45px;
-        margin-right: 8px;
+        margin: 0 8px 0 0; /* Adjusted margins */
         border-width: 1px;
       }
 
@@ -673,25 +677,20 @@
         margin-left: -0.5px;
       }
 
-      /* Ensure header doesn't overlap content */
-      .fade-header {
-        background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(5px);
-        padding: 10px 0;
-      }
-
       nav {
-        gap: 20px;
+        gap: 15px; /* Reduced gap */
         font-size: 1.05em;
         flex-wrap: wrap;
         justify-content: center;
         padding: 0 10px;
-        margin-bottom: 5px;
+        margin: 5px 0; /* Adjusted margins */
       }
 
       nav a {
-        padding: 8px 0;
-        margin-bottom: 5px;
+        padding: 6px 8px; /* Added horizontal padding */
+        margin: 0; /* Removed margins */
+        border-radius: 4px;
+        background: rgba(138, 43, 226, 0.05);
       }
 
       .posts-list a {
@@ -706,7 +705,7 @@
 
       .posts-list li {
         padding: 15px;
-        margin-bottom: 20px;
+        margin-bottom: 15px; /* Reduced margin */
       }
 
       #theme-toggle {
@@ -723,7 +722,7 @@
       }
 
       main {
-        padding-top: 110px; /* Reduced space for header on small devices */
+        padding-top: 100px; /* Adjusted space for header on small devices */
         padding-left: 10px;
         padding-right: 10px;
       }
@@ -762,43 +761,53 @@
 
       .posts-list li {
         padding: 10px; /* Reduced padding */
-        margin-bottom: 12px; /* Reduced bottom margin */
+        margin-bottom: 10px; /* Further reduced bottom margin */
       }
 
       .clock {
-        width: 35px;
-        height: 35px;
+        width: 30px; /* Further reduced size */
+        height: 30px; /* Further reduced size */
         border-width: 1px;
+        margin: 0 5px 0 0; /* Reduced margin */
       }
 
       .clock-hour {
-        height: 10px;
-        margin-top: -10px;
+        height: 8px; /* Reduced size */
+        margin-top: -8px;
         width: 1.5px;
         margin-left: -0.75px;
       }
 
       .clock-minute {
-        height: 14px;
-        margin-top: -14px;
+        height: 12px; /* Reduced size */
+        margin-top: -12px;
         width: 1px;
         margin-left: -0.5px;
       }
 
       .today-date {
         font-size: 0.8em;
-        padding: 6px 10px;
+        padding: 5px 8px; /* Reduced padding */
         min-width: auto;
       }
 
       .today-date-container {
-        margin-top: 5px;
-        margin-bottom: 5px;
+        margin: 3px 0; /* Reduced margins */
+      }
+
+      /* Optimize animations for mobile */
+      .posts-list li, .today-date {
+        transition: all 0.2s ease; /* Faster transitions */
+      }
+
+      /* Reduce hover effects on mobile */
+      .posts-list li:hover {
+        transform: translateY(-3px); /* Smaller transform */
       }
 
       /* Adjust footer for small screens */
       footer {
-        padding: 15px 10px;
+        padding: 12px 10px; /* Reduced padding */
         font-size: 0.9em;
       }
     }
