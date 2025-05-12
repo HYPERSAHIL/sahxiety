@@ -46,20 +46,26 @@
       }
       .fade-header {
         width: 100%;
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(0, 0, 0, 0.9);
         backdrop-filter: blur(5px);
-        transition: opacity 0.4s;
+        transition: all 0.3s ease;
         opacity: 1;
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         z-index: 10;
-        padding: 10px 0 0 0; /* Removed bottom padding */
+        padding: 5px 0 0 0; /* Minimal top padding */
+        transform: translateY(0);
+        height: auto;
+        max-height: 150px; /* Set a max height */
+        overflow: hidden;
       }
       .fade-header.faded {
-        opacity: 0.3; /* More visible fade effect */
+        opacity: 0; /* Completely invisible */
+        transform: translateY(-100%); /* Move it completely off-screen */
         pointer-events: none;
+        max-height: 0; /* Collapse height */
       }
       .site-title {
         font-family: 'Playfair Display', serif;
@@ -67,10 +73,11 @@
         font-weight: 700;
         letter-spacing: 1px;
         margin: 0;
-        padding: 32px 0 0 0;
+        padding: 10px 0 0 0; /* Reduced padding */
         color: var(--color-text-dark);
         text-align: center;
         transition: color var(--transition-speed);
+        line-height: 1.1; /* Tighter line height */
       }
       body.light-mode .site-title {
         color: var(--color-text-light);
@@ -79,8 +86,10 @@
         display: flex;
         justify-content: center;
         gap: 36px;
-        margin: 24px 0 0 0;
+        margin: 5px 0 5px 0; /* Reduced margins */
         font-family: 'Playfair Display', serif;
+        padding: 0;
+        line-height: 1;
       }
       nav a, nav button {
         color: var(--accent-color);
@@ -126,8 +135,10 @@
         max-width: 680px;
         width: 100%;
         margin: 0 auto;
-        padding: 30px 32px 48px 32px; /* Reduced top padding */
+        padding: 70px 32px 48px 32px; /* Increased top padding to account for header */
         animation: fadeIn 0.5s ease-out; /* Added fade-in animation */
+        position: relative; /* Ensure proper stacking */
+        z-index: 1; /* Lower than header */
       }
       h1, h2, h3, h4 {
         font-family: 'Playfair Display', serif;
@@ -656,8 +667,8 @@
         }
 
         main {
-          padding: 20px 16px 36px 16px;
-          margin-top: 100px; /* Increased space for fixed header */
+          padding: 60px 16px 36px 16px; /* Adjusted top padding */
+          margin-top: 0; /* No margin, using padding instead */
           width: 100%;
           box-sizing: border-box;
         }
@@ -672,27 +683,29 @@
 
         .site-title {
           font-size: 1.6em;
-          padding-top: 12px; /* Reduced padding */
-          padding-bottom: 5px; /* Added bottom padding */
+          padding: 3px 0 0 0; /* Minimal padding */
           text-align: center;
           width: 100%;
+          line-height: 1; /* Tighter line height */
+          margin: 0;
         }
 
         .fade-header {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 10px 0 0 0; /* Only top padding, no bottom padding */
+          padding: 2px 0 0 0; /* Minimal top padding */
           height: auto; /* Allow natural height */
+          max-height: 80px; /* Smaller max height for mobile */
         }
 
         nav {
-          gap: 12px; /* Further reduced gap */
+          gap: 10px; /* Further reduced gap */
           font-size: 1.05em;
           flex-wrap: wrap;
           justify-content: center;
-          padding: 0 10px;
-          margin: 5px 0 5px 0; /* Added bottom margin to create space between nav and content */
+          padding: 0 5px;
+          margin: 2px 0 2px 0; /* Minimal margins */
           width: 100%;
           line-height: 1; /* Reduce line height */
         }
@@ -761,15 +774,15 @@
         }
 
         main {
-          padding-top: 80px; /* Further reduced space for header on small devices */
+          padding-top: 50px; /* Minimal space for header on small devices */
           padding-left: 10px;
           padding-right: 10px;
         }
 
         .site-title {
-          font-size: 1.5em;
-          padding-top: 10px;
-          padding-bottom: 4px;
+          font-size: 1.4em; /* Smaller font */
+          padding: 2px 0 0 0; /* Minimal padding */
+          margin: 0;
         }
 
         nav {
@@ -975,17 +988,25 @@
 
       updateIcons();
 
-      // Header fade on scroll - completely rewritten for better mobile support
+      // Header hide/show on scroll - completely rewritten for mobile
       const header = document.getElementById('fade-header');
       let lastScrollTop = 0;
+      let scrollDirection = 'up';
       let ticking = false;
 
-      function fadeHeaderOnScroll() {
-        // Get current scroll position from multiple sources for cross-browser compatibility
+      function handleHeaderVisibility() {
+        // Get current scroll position from all possible sources
         const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
 
-        // Apply fade effect at a lower threshold for better mobile experience
-        if (scrollTop > 30) {
+        // Determine scroll direction
+        if (scrollTop > lastScrollTop && scrollTop > 10) {
+          scrollDirection = 'down';
+        } else {
+          scrollDirection = 'up';
+        }
+
+        // Hide header when scrolling down, show when scrolling up
+        if (scrollDirection === 'down') {
           header.classList.add('faded');
         } else {
           header.classList.remove('faded');
@@ -996,21 +1017,25 @@
       }
 
       // Throttle scroll events for better performance
-      function requestFade() {
+      function requestHeaderUpdate() {
         if (!ticking) {
-          requestAnimationFrame(fadeHeaderOnScroll);
+          requestAnimationFrame(handleHeaderVisibility);
           ticking = true;
         }
       }
 
-      // Add all possible event listeners for maximum compatibility
-      window.addEventListener('scroll', requestFade, { passive: true });
-      window.addEventListener('touchmove', requestFade, { passive: true });
-      window.addEventListener('touchstart', requestFade, { passive: true });
-      window.addEventListener('touchend', requestFade, { passive: true });
+      // Add multiple event listeners for maximum compatibility
+      ['scroll', 'touchmove', 'touchstart', 'touchend'].forEach(eventType => {
+        window.addEventListener(eventType, requestHeaderUpdate, { passive: true });
+      });
 
-      // Initial check
-      fadeHeaderOnScroll();
+      // Force header visibility on page load
+      window.addEventListener('load', function() {
+        header.classList.remove('faded');
+      });
+
+      // Check header visibility on page load
+      handleHeaderVisibility();
 
       // Set animation order for nav links
       document.querySelectorAll('nav a').forEach((link, index) => {
