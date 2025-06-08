@@ -492,6 +492,19 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    /* Added for mobile performance improvements */
+    @media (max-width: 768px) {
+      .upcoming-post {
+        animation: none; /* Disables gradientBG */
+      }
+      h1::after {
+        animation: none; /* Disables shimmer */
+      }
+      .upcoming-posts-header::after {
+        animation: none; /* Disables shimmer */
+      }
+    }
     footer {
       width: 100%;
       text-align: center;

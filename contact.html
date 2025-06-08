@@ -592,6 +592,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        height: auto;
+        max-height: 300px;
+        overflow: visible;
       }
 
       .site-title {
@@ -695,32 +698,36 @@
       }
 
       .fade-header {
-        max-height: 150px; /* Increased max height to fit all nav items */
+        max-height: 300px; /* Increased max height to fit all nav items */
         display: flex;
         flex-direction: column;
         align-items: center; /* Center items */
         padding: 5px 0;
+        height: auto;
+        overflow: visible;
       }
 
       nav {
-        gap: 12px; /* Increased gap for better spacing */
+        gap: 6px; /* Adjusted gap */
         margin: 10px 0; /* Increased margins */
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center; /* Center alignment */
-        padding: 0 15px; /* Increased padding on the sides */
+        padding-left: 5px; /* Added padding */
+        padding-right: 5px; /* Added padding */
         width: 100%;
         display: flex;
       }
 
       nav a {
-        font-size: 1.2em; /* Increased font size */
-        padding: 8px 15px; /* Increased padding for better touch targets */
-        margin: 3px; /* Increased margin between items */
+        font-size: 0.85em; /* Adjusted font size */
+        padding: 5px 6px; /* Adjusted padding */
+        margin: 2px; /* Adjusted margin */
         border-radius: 4px;
         background: rgba(138, 43, 226, 0.05);
         line-height: 1.3; /* Increased line height */
         display: inline-block; /* Ensure proper display */
+        white-space: nowrap;
       }
 
       .mail-label {
@@ -768,6 +775,14 @@
         padding: 12px 10px; /* Reduced padding */
         font-size: 0.9em;
       }
+    }
+
+    /* Added for mobile performance improvements */
+    @media (max-width: 768px) {
+      .email-box::before {
+        animation: none; /* Stop gradientBG on email box */
+      }
+      /* No h1::after shimmer noted in contact.html base styles to disable here */
     }
     footer {
       width: 100%;
@@ -923,7 +938,7 @@
         // Restore main content padding when header is visible
         if (window.innerWidth <= 480) {
           document.querySelector('main').style.paddingTop = '0';
-          document.querySelector('main').style.marginTop = '120px';
+            document.querySelector('main').style.marginTop = '95px';
         }
       }
 
@@ -962,7 +977,7 @@
 
       // Ensure content is properly positioned on page load
       if (window.innerWidth <= 480) {
-        document.querySelector('main').style.marginTop = '120px';
+        document.querySelector('main').style.marginTop = '95px';
       }
     });
 
