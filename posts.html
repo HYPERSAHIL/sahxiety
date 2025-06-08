@@ -727,13 +727,15 @@
     /* Small mobile devices */
     @media (max-width: 480px) {
       .fade-header {
-        max-height: 200px;
+        max-height: 300px; /* Updated max-height */
         z-index: 1000;
         background: rgba(0, 0, 0, 0.95);
         backdrop-filter: blur(5px);
         padding: 10px 0;
         position: fixed;
         width: 100%;
+        height: auto; /* Added height auto */
+        overflow: visible; /* Added overflow visible */
       }
       
       nav {
@@ -796,6 +798,23 @@
         position: absolute;
         left: 50%;
         top: 50%;
+      }
+    }
+
+    /* Added for mobile performance improvements */
+    @media (max-width: 768px) {
+      /* .newsletter is not on this page, but rule kept for consistency if ever added */
+      .newsletter {
+        animation: scaleIn 0.7s ease-out 0.3s both;
+      }
+      .upcoming-post {
+        animation: none; /* Remove gradientBG from .upcoming-post */
+      }
+      h1::after {
+        animation: none; /* Remove shimmer from h1::after */
+      }
+      .upcoming-posts-header::after {
+        animation: none; /* Remove shimmer from .upcoming-posts-header::after */
       }
     }
   </style>
