@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>sahxiety – Why Did I Create This?</title>
+    <title>sahxiety – Sony – The Rise, the Fall, and the Reinvention</title>
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700|Georgia:400,700&display=swap" rel="stylesheet" />
     <style>
       :root {
@@ -806,7 +806,7 @@
           gap: 6px; /* Adjusted gap */
           margin: 10px 0; /* Increased margins */
           flex-direction: row;
-          flex-wrap: wrap; /* Should already allow wrapping, but explicit is fine */
+          flex-wrap: wrap;
           justify-content: center; /* Center alignment */
           padding-left: 5px; /* Added padding */
           padding-right: 5px; /* Added padding */
@@ -918,38 +918,32 @@
     <header id="fade-header" class="fade-header">
         <div class="site-title">sahxiety</div>
         <nav>
-            <a href="index.html" class="active">Home</a>
-            <a href="posts.html">Posts</a>
+            <a href="index.html">Home</a>
+            <a href="posts.html" class="active">Posts</a>
             <a href="newsletter.html">Newsletter</a>
             <a href="contact.html" title="Contact Sahil">Contact</a>
         </nav>
     </header>
     <main>
-        <h1>Why Did I Create This?</h1>
-        <p>
-            So, you might be wondering where the name “sahxiety” comes from. It’s actually a portmanteau-a blend of my name, <strong>Sahil</strong>, and the word <strong>anxiety</strong>. I thought it perfectly captures both a part of who I am and the thoughts I want to share.
-        </p>
-        <p>
-            On this blog, you’ll find everything from my failed projects to late-night existential musings, and pretty much everything in between.
-        </p>
-        <p>
-            I plan to write here weekly or monthly-not as a professional, but as someone who enjoys sharing, reflecting, and sometimes just venting.
-        </p>
-        <p>
-            Thanks for stopping by! See you in the next post.
-        </p>
+        <h1>Sony – The Rise, the Fall, and the Reinvention</h1>
+        <p>Sony. For a name that once meant the future, it's strange how many people today barely notice it unless it's printed on a camera lens or a PlayStation. But the story of Sony is way more interesting than just electronics. It’s a story of innovation, pride, mistakes, and quiet survival.</p>
+        <p>Sony began in 1946 in post-war Japan. It started small — just a few engineers trying to fix radios. But soon, it invented Japan’s first tape recorder. Then came the game changer — the Walkman in 1979. Imagine a time when music was stuck in one place — and suddenly, you could carry it in your pocket. That was Sony’s magic.</p>
+        <p>In the 80s and 90s, Sony dominated. TVs, CD players, camcorders — all built like tanks, all stylish. Then they gave us the PlayStation, which changed gaming forever.</p>
+        <p>But behind all that success, Sony started slipping.</p>
+        <p>They invented things that didn’t catch on — like MiniDiscs. They kept making proprietary formats like Memory Stick when the world was going USB. Then came DRM (Digital Rights Management) — Sony tried to protect its music CDs by secretly installing spyware on people’s computers in 2005. That didn’t just ruin trust, it became a full-blown scandal. They were literally sued for it.</p>
+        <p>While Apple made iPods simple and clean, Sony got lost in its own complications. Instead of adapting, they stuck to their own systems — even when the market moved on.</p>
+        <p>Even in phones, Xperia devices had solid specs and amazing cameras, but they were always a step behind in marketing, design, or pricing. Eventually, Sony stopped trying to be “everywhere” and shifted into the background.</p>
+        <p>But Sony never really disappeared. It just became quieter — and smarter.</p>
+        <p>Today, they make some of the best camera sensors in the world — used in iPhones, Samsungs, and almost every flagship Android. They're not bragging about it, but they own the image. Literally.</p>
+        <p>Then there's the entertainment empire.</p>
+        <p>Sony owns Columbia Pictures, TriStar, and most famously, the Spider-Man movie rights. They bought Crunchyroll, so anime fans probably use their platform without even realizing it's Sony. They also own Funimation, and a huge chunk of the music industry through Sony Music. In short: from anime to blockbusters to music — Sony is everywhere, just not loudly.</p>
+        <p>Their consoles? Still a beast. PlayStation 5 is one of the top gaming systems globally, even though it’s hard to get one sometimes.</p>
+        <p>So what do we learn from Sony?</p>
+        <p>That even if you fall, you can still rise — maybe not as loudly, but more wisely. Sony stopped chasing trends and started dominating quietly in the background — in sensors, in entertainment, in gaming.</p>
+        <p>It’s not the same Sony that gave us the Walkman. But maybe it doesn’t need to be.</p>
+        <p>Hope you found this as interesting to read as it was for me to write.</p>
+        <p>Until next time,</p>
         <p class="signature">Sahil</p>
-
-        <section class="recent-posts" id="recent-posts" aria-label="Recent posts">
-            <h2>Recent Posts</h2>
-            <ul class="posts-list" id="recent-posts-list">
-                <!-- Recent posts will be loaded dynamically -->
-                <div class="posts-loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading recent posts...</p>
-                </div>
-            </ul>
-        </section>
 
         <section class="newsletter" id="newsletter" aria-label="Newsletter subscription">
             <h3>Join the Newsletter</h3>
@@ -1193,146 +1187,11 @@
         });
       }
 
-      // Function to format a date with proper ordinal suffix
-      function formatDateWithOrdinal(date) {
-        const day = date.getDate();
-        const month = date.toLocaleString('en-US', { month: 'long' });
-        const year = date.getFullYear();
-
-        const ordinalSuffix = (day) => {
-          if (day > 3 && day < 21) return 'th';
-          switch (day % 10) {
-            case 1: return 'st';
-            case 2: return 'nd';
-            case 3: return 'rd';
-            default: return 'th';
-          }
-        };
-
-        return `${day}${ordinalSuffix(day)} ${month} ${year}`;
-      }
-
-      // Load recent posts from JSON
-      async function loadRecentPosts() {
-        try {
-          const response = await fetch('posts.json');
-          let posts = await response.json();
-
-          const recentPostsList = document.getElementById('recent-posts-list');
-          recentPostsList.innerHTML = ''; // Clear loading indicator
-
-          // Sort posts by date in descending order (newest first)
-          posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-          // Get the top 3 recent posts
-          const recentThreePosts = posts.slice(0, 3);
-
-          if (recentThreePosts.length === 0) {
-            recentPostsList.innerHTML = '<div class="no-posts-message">No recent posts to display.</div>';
-            // Still apply section animation even if no posts
-            const recentPostsSection = document.querySelector('.recent-posts');
-            if (recentPostsSection) {
-                recentPostsSection.style.animation = 'float 8s infinite ease-in-out, gradientBG 15s ease infinite';
-            }
-            return;
-          }
-
-          recentThreePosts.forEach(post => {
-            const li = document.createElement('li');
-            li.style.animation = 'flipIn 0.8s ease-out forwards';
-
-            const postDate = new Date(post.date);
-            const formattedDate = formatDateWithOrdinal(postDate);
-
-            const link = document.createElement('a');
-            link.href = post.content; // Use post.content directly
-            link.textContent = post.title;
-
-            const dateSpan = document.createElement('span');
-            dateSpan.className = 'post-date';
-
-            const clockIcon = document.createElement('div');
-            clockIcon.className = 'clock';
-            clockIcon.style.width = '16px';
-            clockIcon.style.height = '16px';
-            clockIcon.style.marginRight = '8px';
-            clockIcon.style.border = '2px solid var(--accent-color)';
-            clockIcon.style.borderRadius = '50%';
-            clockIcon.style.position = 'relative';
-            clockIcon.style.display = 'inline-block';
-            clockIcon.style.background = 'rgba(138, 43, 226, 0.1)';
-            clockIcon.style.boxShadow = '0 0 10px rgba(138, 43, 226, 0.3)';
-
-            const hourHand = document.createElement('div');
-            hourHand.style.position = 'absolute';
-            hourHand.style.background = 'var(--accent-color)';
-            hourHand.style.transformOrigin = 'bottom center';
-            hourHand.style.top = '50%';
-            hourHand.style.left = '50%';
-            hourHand.style.width = '2px';
-            hourHand.style.height = '4px';
-            hourHand.style.marginLeft = '-1px';
-            hourHand.style.marginTop = '-4px';
-            hourHand.style.borderRadius = '10px';
-
-            const minuteHand = document.createElement('div');
-            minuteHand.style.position = 'absolute';
-            minuteHand.style.background = 'var(--accent-color)';
-            minuteHand.style.transformOrigin = 'bottom center';
-            minuteHand.style.top = '50%';
-            minuteHand.style.left = '50%';
-            minuteHand.style.width = '1px';
-            minuteHand.style.height = '5px';
-            minuteHand.style.marginLeft = '-0.5px';
-            minuteHand.style.marginTop = '-5px';
-            minuteHand.style.borderRadius = '10px';
-
-            const hours = postDate.getHours() % 12;
-            const minutes = postDate.getMinutes();
-            hourHand.style.transform = `rotate(${(hours * 30) + (minutes * 0.5)}deg)`;
-            minuteHand.style.transform = `rotate(${minutes * 6}deg)`;
-
-            clockIcon.appendChild(hourHand);
-            clockIcon.appendChild(minuteHand);
-
-            dateSpan.appendChild(clockIcon);
-            dateSpan.appendChild(document.createTextNode(formattedDate));
-
-            const excerptP = document.createElement('p');
-            excerptP.className = 'post-excerpt';
-            excerptP.textContent = post.excerpt;
-
-            li.appendChild(link);
-            li.appendChild(dateSpan);
-            li.appendChild(excerptP);
-
-            recentPostsList.appendChild(li);
-          });
-
-          // Add floating animation to the recent posts section
-          const recentPostsSection = document.querySelector('.recent-posts');
-          if (recentPostsSection) {
-            recentPostsSection.style.animation = 'float 8s infinite ease-in-out, gradientBG 15s ease infinite';
-          }
-
-        } catch (error) {
-          console.error('Error loading recent posts:', error);
-          const recentPostsList = document.getElementById('recent-posts-list');
-          // Check if recentPostsList exists before trying to set its innerHTML
-          if (recentPostsList) {
-            recentPostsList.innerHTML = '<div class="posts-loading">Failed to load recent posts. Please try again later.</div>';
-          }
-        }
-      }
-
       // Initialize everything when DOM is loaded
       document.addEventListener('DOMContentLoaded', function() {
         createParticles();
         window.addEventListener('scroll', revealOnScroll);
         revealOnScroll(); // Run once on page load
-
-        // Load recent posts
-        loadRecentPosts();
 
         // Add floating animation to the newsletter section
         const newsletterSection = document.querySelector('.newsletter');
