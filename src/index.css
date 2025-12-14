@@ -1,0 +1,384 @@
+/* ===== CSS Variables ===== */
+:root {
+    --color-text-light: #222222;
+    --color-text-dark: #f5f5f5;
+    --accent-color: #8a2be2;
+    --accent-color-hover: #6a1fb3;
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'Georgia', serif;
+}
+
+/* ===== Reset & Base ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+body {
+    color: var(--color-text-dark);
+    font-family: var(--font-body);
+    background: #050505;
+    min-height: 100vh;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
+    width: 0;
+}
+
+#root {
+    min-height: 100vh;
+}
+
+/* ===== FIXED STICKY BRAND HEADER ===== */
+.sticky-brand-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Translucent glass - stars visible through */
+    background: rgba(5, 5, 5, 0.2);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    /* Soft fade at bottom */
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    /* 3D perspective for children */
+    perspective: 1000px;
+}
+
+/* ===== 3D BRAND HEADER - STATIC BUT DYNAMIC ===== */
+.brand-3d-container {
+    transform-style: preserve-3d;
+    perspective: 800px;
+}
+
+.brand-3d-wrapper {
+    position: relative;
+    transform-style: preserve-3d;
+    /* Static position - no floating/rotation */
+    transform: translateZ(0);
+}
+
+/* Shared text styles */
+.brand-shadow-layer,
+.brand-main-text {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: -3px;
+    display: block;
+    user-select: none;
+}
+
+/* Shadow depth layers - Creates static depth */
+.brand-shadow-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(138, 43, 226, 0.1);
+}
+
+.brand-shadow-layer.layer-1 {
+    transform: translateZ(-5px);
+    text-shadow: 0 0 10px rgba(138, 43, 226, 0.2);
+    opacity: 0.2;
+}
+
+.brand-shadow-layer.layer-2 {
+    transform: translateZ(-10px);
+    text-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+    opacity: 0.4;
+}
+
+.brand-shadow-layer.layer-3 {
+    transform: translateZ(-15px);
+    text-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+    opacity: 0.6;
+}
+
+/* Main text - The "Starry Shimmer" Surface */
+.brand-main-text {
+    position: relative;
+    transform: translateZ(0);
+
+    /* Starry Metallic Gradient */
+    background: linear-gradient(110deg,
+            #aaaaaa 0%,
+            #ffffff 15%,
+            #aaaaaa 30%,
+            #555555 45%,
+            #ffffff 60%,
+            #aaaaaa 75%,
+            #ffffff 90%,
+            #aaaaaa 100%);
+    background-size: 400% 100%;
+
+    /* Animation: Slow, subconscious flow */
+    animation: starry-flow 15s linear infinite;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    /* Crisp definition */
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.8));
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes starry-flow {
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+/* Subtle Reflection */
+.brand-3d-wrapper::after {
+    content: 'sahxiety';
+    position: absolute;
+    top: 90%;
+    left: 0;
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: -3px;
+    background: linear-gradient(180deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            transparent 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: scaleY(-0.7) skewX(-10deg);
+    filter: blur(2px);
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+/* Spacer */
+.header-spacer {
+    height: 100px;
+    width: 100%;
+}
+
+/* ===== Layout ===== */
+.app-container {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== Navigation ===== */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    padding: 20px 10px;
+    position: relative;
+    z-index: 10;
+}
+
+nav a {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+}
+
+nav a:hover,
+nav a.active {
+    background: #fff;
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Main Content ===== */
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 30px 24px 60px;
+    position: relative;
+    z-index: 5;
+}
+
+/* ===== Typography ===== */
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--font-heading);
+}
+
+h1 {
+    font-size: 2.2em;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 0.8em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+p {
+    font-size: 1.15em;
+    line-height: 1.8;
+    margin-bottom: 1.5em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== Buttons ===== */
+.btn-premium,
+button[type="submit"] {
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1.1em;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    font-family: var(--font-heading);
+}
+
+.btn-premium:hover,
+button[type="submit"]:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Social Buttons ===== */
+.btn-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    width: 100%;
+    max-width: 320px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(5px);
+    font-family: var(--font-heading);
+}
+
+.btn-social:hover {
+    background: #fff;
+    color: #000;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Posts List ===== */
+.posts-list {
+    list-style: none;
+    padding: 0;
+}
+
+.posts-list li {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.posts-list a {
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1.25em;
+    font-family: var(--font-heading);
+}
+
+.posts-list a:hover {
+    color: var(--accent-color);
+}
+
+.post-date {
+    display: block;
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 4px;
+}
+
+/* ===== Footer ===== */
+footer {
+    text-align: center;
+    padding: 40px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9em;
+    position: relative;
+    z-index: 5;
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 600px) {
+    .sticky-brand-container {
+        height: 100px;
+    }
+
+    .brand-shadow-layer,
+    .brand-main-text {
+        font-size: 2.8rem;
+        letter-spacing: -2px;
+    }
+
+    .brand-3d-wrapper::after {
+        font-size: 2.8rem;
+        letter-spacing: -2px;
+    }
+
+    .header-spacer {
+        height: 80px;
+    }
+
+    nav {
+        gap: 8px;
+        padding: 15px 10px;
+    }
+
+    nav a {
+        padding: 8px 14px;
+        font-size: 0.9em;
+    }
+
+    main {
+        padding: 20px 16px 40px;
+    }
+}
