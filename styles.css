@@ -1,0 +1,347 @@
+:root {
+    --color-text-light: #222222;
+    --color-text-dark: #f5f5f5;
+    --accent-color: #8a2be2;
+    --accent-color-hover: #6a1fb3;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Georgia', serif;
+    --transition-speed: 0.3s;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: var(--font-body);
+    font-size: 1.15em;
+    line-height: 1.8;
+    color: var(--color-text-dark);
+    text-align: left;
+    /* Background Image Logic */
+    background-image: url('background.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* Overlay to ensure text readability if needed, usually managed via text shadow or semi-transparent containers */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    /* Dark overlay */
+    z-index: -1;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+.site-title,
+nav {
+    font-family: var(--font-heading);
+}
+
+h1 {
+    font-size: 2.2em;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 0.8em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+p {
+    margin-bottom: 1.5em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Header & Nav */
+.fade-header {
+    width: 100%;
+    padding: 1rem 0;
+    text-align: center;
+    transition: opacity 0.4s;
+}
+
+.site-title {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin: 0;
+    padding: 20px 0;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+/* Premium Button Style (Image 2 interpretation) */
+/* Looking for a clean, white/glassy look with rounded corners */
+nav a,
+.btn-premium {
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    /* Pillow shape / Rounded */
+    font-weight: 700;
+    font-size: 1em;
+    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 1);
+    display: inline-block;
+    backdrop-filter: blur(4px);
+}
+
+nav a:hover,
+nav a.active,
+.btn-premium:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    color: #000;
+    border-bottom: 1px solid white;
+    /* Override old style */
+}
+
+/* Main Container */
+main {
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+}
+
+/* Newsletter Section specifically */
+.newsletter {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    margin-top: 60px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.newsletter h3 {
+    margin-top: 0;
+    font-size: 1.8em;
+}
+
+#newsletter-form input {
+    width: 100%;
+    max-width: 350px;
+    padding: 16px;
+    margin: 8px 0;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-family: var(--font-body);
+}
+
+#newsletter-form input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#newsletter-form button {
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#newsletter-form button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 40px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9em;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .site-title {
+        font-size: 2em;
+    }
+
+    nav {
+        flex-direction: column;
+        /* Stack buttons on mobile like Image 2 likely shows */
+        padding: 0 40px;
+    }
+
+    nav a {
+        width: 100%;
+        text-align: center;
+        padding: 16px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+}
+
+/* --- Posts Page Styles --- */
+ul.posts-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.posts-list li {
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.posts-list a {
+    color: #fff;
+    /* Premium look: standard text color, accent on hover */
+    font-family: var(--font-heading);
+    font-size: 1.4em;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.posts-list a:hover {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.posts-list .post-date {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9em;
+    margin-top: 6px;
+    display: block;
+}
+
+/* --- Contact Page Styles --- */
+.mail-label {
+    font-family: var(--font-heading);
+    font-size: 1.2em;
+    margin-bottom: 8px;
+    color: #fff;
+    text-align: center;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.email-box {
+    font-size: 1.3em;
+    color: var(--accent-color);
+    word-break: break-all;
+    font-family: var(--font-body);
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    transition: color 0.2s;
+    margin-bottom: 40px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.email-box:hover,
+.email-box:focus {
+    color: #fff;
+}
+
+/* Social Buttons */
+.instagram-btn,
+.film-journal-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 320px;
+    margin-bottom: 20px;
+}
+
+.instagram-btn svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.instagram-btn:hover,
+.instagram-btn:focus,
+.film-journal-btn:hover,
+.film-journal-btn:focus {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    color: #fff;
+    border-color: #fff;
+}
+
+/* Letterboxd Dots */
+.lb-dots {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.lb-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.dot-orange {
+    background: #ff8000;
+}
+
+.dot-green {
+    background: #00e054;
+}
+
+.dot-blue {
+    background: #40bcf4;
+}

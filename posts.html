@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>sahxiety – Posts</title>
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700|Georgia:400,700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Specific overrides if needed */
+  </style>
+</head>
+
+<body>
+  <button id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+    <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+      viewBox="0 0 24 24" style="display: inline;">
+      <path d="M21.75 15.5a9 9 0 01-11.19-11.19 7 7 0 109.19 9.19 8.94 8.94 0 011.99 1z" />
+    </svg>
+    <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"
+      style="display: none;">
+      <path
+        d="M12 4.75a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0112 4.75zm5.657 1.657a.75.75 0 011.06 1.06l-1.06 1.06a.75.75 0 11-1.06-1.06l1.06-1.06zM18.25 12a.75.75 0 01.75.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm-6.25 6.25a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zm-5.657-1.657a.75.75 0 01-1.06-1.06l1.06-1.06a.75.75 0 111.06 1.06l-1.06 1.06zM5.75 12a.75.75 0 01-.75-.75H3.5a.75.75 0 010-1.5h1.5a.75.75 0 01.75.75zm6.25-6.25a.75.75 0 01-.75-.75V3.5a.75.75 0 011.5 0v1.5a.75.75 0 01-.75.75zm0 12a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+    </svg>
+  </button>
+  <div class="fade-header" id="fade-header">
+    <div class="site-title">sahxiety</div>
+    <div class="today-date" id="today-date"></div>
+    <nav>
+      <a href="https://sahxiety.pages.dev/">Home</a>
+      <a href="https://sahxiety.pages.dev/posts" class="active">Posts</a>
+      <a href="https://sahxiety.pages.dev/newsletter">Newsletter</a>
+      <a href="https://sahxiety.pages.dev/contact" title="Contact Sahil">Contact</a>
+    </nav>
+  </div>
+  <main>
+    <h1>Posts</h1>
+    <ul class="posts-list">
+      <li>
+        <a href="https://sahxiety.pages.dev/">sahxiety – Why Did I Create This?</a>
+        <span class="post-date">11 May 2025</span>
+      </li>
+    </ul>
+  </main>
+  <footer>
+    © 2025 Sahil Yadav. All rights reserved.
+  </footer>
+  <script>
+    // Theme toggle
+    const toggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+    const iconMoon = document.getElementById('icon-moon');
+    const iconSun = document.getElementById('icon-sun');
+    function updateIcons() {
+      if (body.classList.contains('light-mode')) {
+        iconMoon.style.display = 'none';
+        iconSun.style.display = 'inline';
+      } else {
+        iconMoon.style.display = 'inline';
+        iconSun.style.display = 'none';
+      }
+    }
+    toggleBtn.addEventListener('click', () => {
+      body.classList.toggle('light-mode');
+      updateIcons();
+    });
+    updateIcons();
+
+    // Fade header on scroll
+    let lastScroll = 0;
+    const header = document.getElementById('fade-header');
+    window.addEventListener('scroll', function () {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > 60) {
+        header.classList.add('faded');
+      } else {
+        header.classList.remove('faded');
+      }
+      lastScroll = currentScroll;
+    });
+
+    // Dynamic date and time in IST
+    function updateDateTime() {
+      const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+        timeZone: 'Asia/Kolkata'
+      };
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat('en-IN', options);
+      document.getElementById('today-date').textContent = formatter.format(now);
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+  </script>
+</body>
+
+</html>
