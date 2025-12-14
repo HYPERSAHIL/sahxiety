@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact – sahxiety</title>
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700|Georgia:400,700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Page specific overrides */
+  </style>
+</head>
+
+<body>
+  <button id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+    <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+      viewBox="0 0 24 24" style="display: inline;">
+      <path d="M21.75 15.5a9 9 0 01-11.19-11.19 7 7 0 109.19 9.19 8.94 8.94 0 011.99 1z" />
+    </svg>
+    <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"
+      style="display: none;">
+      <path
+        d="M12 4.75a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0112 4.75zm5.657 1.657a.75.75 0 011.06 1.06l-1.06 1.06a.75.75 0 11-1.06-1.06l1.06-1.06zM18.25 12a.75.75 0 01.75.75h1.5a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zm-6.25 6.25a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zm-5.657-1.657a.75.75 0 01-1.06-1.06l1.06-1.06a.75.75 0 111.06 1.06l-1.06 1.06zM5.75 12a.75.75 0 01-.75-.75H3.5a.75.75 0 010-1.5h1.5a.75.75 0 01.75.75zm6.25-6.25a.75.75 0 01-.75-.75V3.5a.75.75 0 011.5 0v1.5a.75.75 0 01-.75.75zm0 12a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+    </svg>
+  </button>
+  <div class="fade-header" id="fade-header">
+    <div class="site-title">sahxiety</div>
+    <nav>
+      <a href="https://sahxiety.pages.dev/">Home</a>
+      <a href="https://sahxiety.pages.dev/posts">Posts</a>
+      <a href="https://sahxiety.pages.dev/newsletter">Newsletter</a>
+      <a href="https://sahxiety.pages.dev/contact" class="active" title="Contact Sahil">Contact</a>
+    </nav>
+  </div>
+  <main>
+    <div class="mail-label">Mail:</div>
+    <a href="mailto:sahilakala@gmail.com" class="email-box">sahilakala@gmail.com</a>
+
+    <a href="https://instagram.com/ig_sahilyadav" class="instagram-btn" target="_blank" rel="noopener"
+      aria-label="Follow Sahil on Instagram">
+      <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20"
+        height="20">
+        <linearGradient id="instagramGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#f09433" />
+          <stop offset="25%" stop-color="#e6683c" />
+          <stop offset="50%" stop-color="#dc2743" />
+          <stop offset="75%" stop-color="#cc2366" />
+          <stop offset="100%" stop-color="#bc1888" />
+        </linearGradient>
+        <path fill="url(#instagramGradient)"
+          d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5A4.25 4.25 0 007.75 20.5h8.5a4.25 4.25 0 004.25-4.25v-8.5A4.25 4.25 0 0016.25 3.5h-8.5zm8.25 3a1 1 0 110 2 1 1 0 010-2zm-4.25 1.25a4.5 4.5 0 110 9 4.5 4.5 0 010-9zm0 1.5a3 3 0 100 6 3 3 0 000-6z" />
+      </svg>
+      Follow on Instagram
+    </a>
+
+    <a href="https://letterboxd.com/sahilyad/" class="film-journal-btn" target="_blank" rel="noopener">
+      <span class="lb-dots">
+        <span class="lb-dot dot-orange"></span>
+        <span class="lb-dot dot-green"></span>
+        <span class="lb-dot dot-blue"></span>
+      </span>
+      Click Here to See My Film Journal
+    </a>
+  </main>
+  <footer>
+    © 2025 Sahil Yadav. All rights reserved.
+  </footer>
+  <script>
+    const toggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+    const iconMoon = document.getElementById('icon-moon');
+    const iconSun = document.getElementById('icon-sun');
+    function updateIcons() {
+      if (body.classList.contains('light-mode')) {
+        iconMoon.style.display = 'none';
+        iconSun.style.display = 'inline';
+      } else {
+        iconMoon.style.display = 'inline';
+        iconSun.style.display = 'none';
+      }
+    }
+    toggleBtn.addEventListener('click', () => {
+      body.classList.toggle('light-mode');
+      updateIcons();
+    });
+    updateIcons();
+
+    let lastScroll = 0;
+    const header = document.getElementById('fade-header');
+    window.addEventListener('scroll', function () {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > 60) {
+        header.classList.add('faded');
+      } else {
+        header.classList.remove('faded');
+      }
+      lastScroll = currentScroll;
+    });
+  </script>
+</body>
+
+</html>
