@@ -4,15 +4,30 @@ import { Stars, Cloud, Float } from '@react-three/drei'
 
 function Particles() {
     const ref = useRef()
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+
     useFrame((state, delta) => {
         if (ref.current) {
-            ref.current.rotation.x -= delta / 10
-            ref.current.rotation.y -= delta / 15
+            // Auto rotation
+            ref.current.rotation.x -= delta / 15
+            ref.current.rotation.y -= delta / 20
+
+            // Mouse interaction (Parallax)
+            // LERP towards mouse position for smooth follow
+            const targetX = (state.mouse.x * 0.2)
+            const targetY = (state.mouse.y * 0.2)
+
+            ref.current.rotation.x += (targetY - ref.current.rotation.x) * delta * 0.5
+            ref.current.rotation.y += (targetX - ref.current.rotation.y) * delta * 0.5
         }
     })
+
     return (
         <group ref={ref}>
-            <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+            {/* Main starfield */}
+            <Stars radius={100} depth={50} count={6000} factor={4} saturation={0} fade speed={1} />
+            {/* Subtle distant cloud/nebula feeling */}
+            <Cloud opacity={0.1} speed={0.2} width={10} depth={1.5} segments={10} color="#220033" position={[0, -5, -20]} />
         </group>
     )
 }
@@ -25,12 +40,9 @@ export default function ThreeBackground() {
                 <ambientLight intensity={0.5} />
                 {/* Subtle fog for depth */}
                 <color attach="background" args={['#050505']} />
-                <fog attach="fog" args={['#050505', 5, 20]} />
+                <fog attach="fog" args={['#050505', 5, 25]} />
 
                 {/* Floating subtle elements can be added here */}
-                <Float speed={1.4} rotationIntensity={1} floatIntensity={2}>
-                    {/* Maybe some mesh here if needed */}
-                </Float>
             </Canvas>
         </div>
     )

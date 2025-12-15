@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Float, MeshDistortMaterial, Sphere } from '@react-three/drei'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Canvas } from '@react-three/fiber'
+import { Float, Sphere, MeshDistortMaterial } from '@react-three/drei'
 
 const pageTransition = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
+    initial: { opacity: 0, y: 20, filter: 'blur(10px)' },
+    animate: { opacity: 1, y: 0, filter: 'blur(0px)' },
+    exit: { opacity: 0, y: -20, filter: 'blur(10px)' },
     transition: { duration: 0.5 }
 }
 
@@ -29,8 +29,71 @@ function FloatingShape() {
     )
 }
 
+function SuccessMessage() {
+    return (
+        <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            style={{ textAlign: 'center', padding: '2rem', background: 'rgba(0, 255, 127, 0.1)', borderRadius: '20px', border: '1px solid rgba(0, 255, 127, 0.3)' }}
+        >
+            <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring" }}
+                style={{ fontSize: '3rem', marginBottom: '1rem', display: 'block' }}
+            >
+                ✨
+            </motion.div>
+            <h3 style={{ color: '#00ff7f', marginBottom: '0.5rem', fontSize: '1.5rem' }}>Welcome to the Circle</h3>
+            <p style={{ color: 'rgba(255,255,255,0.8)' }}>You've successfully joined. Expect something cool in your inbox soon.</p>
+        </motion.div>
+    )
+}
+
 export default function Newsletter() {
+    const [email, setEmail] = useState('')
     const [submitted, setSubmitted] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        setError('')
+
+        try {
+            const response = await fetch('https://api.buttondown.com/v1/subscribers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${import.meta.env.VITE_BUTTONDOWN_API_KEY}`
+                },
+                body: JSON.stringify({ email_address: email })
+            })
+
+            if (response.ok) {
+                setSubmitted(true)
+            } else {
+                const data = await response.json()
+                // Handle specific Buttondown error codes
+                const errorMessages = {
+                    'email_already_exists': 'You\'re already subscribed!',
+                    'subscriber_already_exists': 'You\'re already subscribed!',
+                    'email_invalid': 'Please enter a valid email address.',
+                    'email_empty': 'Please enter your email address.',
+                    'rate_limited': 'Too many requests. Please try again later.',
+                    'email_blocked': 'This email cannot be subscribed.',
+                }
+                const errorCode = data.code || Object.keys(data)[0]
+                setError(errorMessages[errorCode] || data.detail || 'Something went wrong. Please try again.')
+            }
+        } catch (err) {
+            setError('Network error. Please try again.')
+        } finally {
+            setLoading(false)
+        }
+    }
 
     return (
         <motion.div {...pageTransition} className="page-content" style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
@@ -44,47 +107,49 @@ export default function Newsletter() {
                 padding: '4rem',
                 borderRadius: '2rem',
                 backdropFilter: 'blur(10px)',
-                width: '100%'
+                width: '100%',
+                border: '1px solid rgba(255,255,255,0.05)'
             }}>
 
                 {/* Left Side: Content */}
                 <div className="newsletter-content" style={{ textAlign: 'left' }}>
-                    <h1 style={{ fontSize: '3rem', marginBottom: '0.5rem', lineHeight: '1.1' }}>Stay in the Loop</h1>
-                    <p style={{ fontSize: '1.25rem', color: '#ccc', marginBottom: '2rem' }}>
-                        A space for my late-night thoughts, failed projects, and everything in between. No spam, just raw, honest updates.
-                    </p>
 
-                    <form
-                        action="https://docs.google.com/forms/d/e/1FAIpQLSe14a0S7pXLlULmM7DUqpUQ6kurhkV7lMmHWqzebMKIU31-MQ/formResponse"
-                        method="post"
-                        target="_blank"
-                        onSubmit={() => setSubmitted(true)}
-                        style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}
-                    >
-                        <input
-                            type="text"
-                            name="entry.1746530211"
-                            placeholder="Your name"
-                            required
-                            style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.4)', color: '#fff', fontSize: '1rem' }}
-                        />
-                        <input
-                            type="email"
-                            name="entry.897979136"
-                            placeholder="Your email"
-                            required
-                            style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.4)', color: '#fff', fontSize: '1rem' }}
-                        />
-                        <button type="submit" style={{ padding: '16px', fontSize: '1.1rem', marginTop: '10px' }}>
-                            Join the Circle
-                        </button>
-                    </form>
+                    <AnimatePresence mode="wait">
+                        {!submitted ? (
+                            <motion.div
+                                key="form"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0, x: -20 }}
+                            >
+                                <h1 style={{ fontSize: '3rem', marginBottom: '0.5rem', lineHeight: '1.1' }}>Stay in the Loop</h1>
+                                <p style={{ fontSize: '1.25rem', color: '#ccc', marginBottom: '2rem' }}>
+                                    A space for my late-night thoughts, failed projects, and everything in between. No spam, just raw, honest updates.
+                                </p>
 
-                    {submitted && (
-                        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ color: '#00e054', marginTop: '20px', fontWeight: 'bold' }}>
-                            Welcome aboard! Check your inbox soon. &#128075;
-                        </motion.p>
-                    )}
+                                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="Your email"
+                                        required
+                                        style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.4)', color: '#fff', fontSize: '1rem', outline: 'none' }}
+                                    />
+
+                                    {error && (
+                                        <p style={{ color: '#ff6b6b', fontSize: '0.9rem', margin: 0 }}>{error}</p>
+                                    )}
+
+                                    <button type="submit" disabled={loading} style={{ padding: '16px', fontSize: '1.1rem', marginTop: '10px', opacity: loading ? 0.7 : 1 }}>
+                                        {loading ? 'Joining...' : 'Join the Circle'}
+                                    </button>
+                                </form>
+                            </motion.div>
+                        ) : (
+                            <SuccessMessage key="success" />
+                        )}
+                    </AnimatePresence>
                 </div>
 
                 {/* Right Side: 3D Element */}
@@ -99,10 +164,6 @@ export default function Newsletter() {
 
             </div>
 
-            {/* Mobile responsive fix embedded if inline styles are not enough, but CSS media queries in index.css are better. 
-          I will stick to inline for the structure but let column wrapping happen naturally or via media query.
-          Wait, gridTemplateColumns 1fr 1fr needs a media query for mobile to be 1fr.
-      */}
             <style>{`
         @media (max-width: 768px) {
           .newsletter-container {

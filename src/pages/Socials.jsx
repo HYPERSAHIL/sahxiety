@@ -4,9 +4,9 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { Sparkles, Float, MeshDistortMaterial, Sphere, TorusKnot } from '@react-three/drei'
 
 const pageTransition = {
-    initial: { opacity: 0, scale: 0.95 },
-    animate: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.95 },
+    initial: { opacity: 0, y: 20, filter: 'blur(10px)' },
+    animate: { opacity: 1, y: 0, filter: 'blur(0px)' },
+    exit: { opacity: 0, y: -20, filter: 'blur(10px)' },
     transition: { duration: 0.5 }
 }
 

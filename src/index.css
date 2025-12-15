@@ -13,11 +13,14 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    cursor: none;
+    /* Hide default cursor */
 }
 
 html {
     scroll-behavior: smooth;
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) #050505;
 }
 
 body {
@@ -26,12 +29,116 @@ body {
     background: #050505;
     min-height: 100vh;
     -ms-overflow-style: none;
+    overflow-x: hidden;
 }
 
+/* Custom Scrollbar - Stylish & Minimal */
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-    display: none;
-    width: 0;
+    width: 6px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+    background: #050505;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 10px;
+}
+
+/* ===== Keyboard Accessibility ===== */
+/* Skip to content link - visible only on focus */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent-color);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 0 0 8px 8px;
+    z-index: 10000;
+    text-decoration: none;
+    font-weight: bold;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: none;
+}
+
+/* Focus rings for keyboard navigation */
+*:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+}
+
+/* Remove focus ring for mouse users */
+*:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Restore cursor for interactive elements */
+a,
+button,
+input,
+textarea,
+select,
+[role="button"],
+[tabindex] {
+    cursor: pointer;
+}
+
+/* Custom Selection */
+::selection {
+    background: var(--accent-color);
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Custom Cursor Styles */
+.custom-cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none;
+    mix-blend-mode: difference;
+}
+
+.custom-cursor-trail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--accent-color);
+    background-color: rgba(138, 43, 226, 0.1);
+    border-radius: 50%;
+    z-index: 9998;
+    pointer-events: none;
+    backdrop-filter: blur(1px);
+    box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+}
+
+/* Mobile: Restore default cursor */
+@media (max-width: 768px) {
+    * {
+        cursor: auto !important;
+    }
+
+    .custom-cursor-dot,
+    .custom-cursor-trail {
+        display: none;
+    }
 }
 
 #root {
@@ -199,33 +306,41 @@ nav {
 }
 
 nav a {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+    /* Lighter glass */
     color: #fff;
     text-decoration: none;
-    padding: 10px 20px;
+    padding: 10px 24px;
     border-radius: 30px;
-    font-weight: 700;
+    font-weight: 500;
     font-family: var(--font-heading);
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(5px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    letter-spacing: 0.5px;
 }
 
 nav a:hover,
 nav a.active {
-    background: #fff;
-    color: #000;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(138, 43, 226, 0.2);
+    /* Accent glow */
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 /* ===== Main Content ===== */
 main {
     flex: 1;
     width: 100%;
-    max-width: 720px;
+    max-width: 800px;
+    /* Slightly wider for better reading */
     margin: 0 auto;
-    padding: 30px 24px 60px;
+    padding: 40px 24px 80px;
     position: relative;
     z-index: 5;
 }
@@ -236,45 +351,102 @@ h2,
 h3,
 h4 {
     font-family: var(--font-heading);
+    color: #fff;
 }
 
 h1 {
-    font-size: 2.2em;
+    font-size: 2.5em;
     font-weight: 700;
     margin-top: 0;
-    margin-bottom: 0.8em;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 0.6em;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    letter-spacing: -0.02em;
 }
 
 p {
-    font-size: 1.15em;
+    font-size: 1.125em;
     line-height: 1.8;
-    margin-bottom: 1.5em;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1.6em;
+    color: rgba(255, 255, 255, 0.85);
+    /* Slightly brighter text */
+    font-weight: 300;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 4px solid var(--accent-color);
+    padding-left: 20px;
+    margin: 30px 0;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.7);
+    background: linear-gradient(90deg, rgba(138, 43, 226, 0.05), transparent);
+}
+
+/* Code Blocks */
+pre,
+code {
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #e0e0e0;
+}
+
+pre {
+    background: #0f0f12;
+    /* Darker distinct background */
+    padding: 20px;
+    border-radius: 12px;
+    overflow-x: auto;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+pre code {
+    background: transparent;
+    padding: 0;
+    color: #a5b3ce;
+    /* Soft blue-grey text */
+    display: block;
+    line-height: 1.6;
 }
 
 /* ===== Buttons ===== */
 .btn-premium,
 button[type="submit"] {
-    background: #fff;
-    color: #000;
+    background: transparent;
+    color: #fff;
     text-decoration: none;
-    padding: 14px 32px;
-    border-radius: 30px;
-    font-weight: 700;
-    font-size: 1.1em;
-    transition: all 0.2s ease;
-    border: none;
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     display: inline-block;
     font-family: var(--font-heading);
+    backdrop-filter: blur(5px);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.85em;
 }
 
 .btn-premium:hover,
 button[type="submit"]:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(138, 43, 226, 0.3);
+    /* Premium glow */
+    border-color: #fff;
 }
 
 /* ===== Social Buttons ===== */
@@ -282,69 +454,43 @@ button[type="submit"]:hover {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 14px 28px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 30px;
-    font-weight: 700;
-    font-size: 1.1em;
+    padding: 16px 28px;
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    /* Modern cleaner radius */
+    font-weight: 500;
+    font-size: 1.05em;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
     width: 100%;
-    max-width: 320px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     backdrop-filter: blur(5px);
     font-family: var(--font-heading);
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-social:hover {
-    background: #fff;
-    color: #000;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-}
-
-/* ===== Posts List ===== */
-.posts-list {
-    list-style: none;
-    padding: 0;
-}
-
-.posts-list li {
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.posts-list a {
+    background: rgba(255, 255, 255, 0.08);
     color: #fff;
-    font-weight: 700;
-    text-decoration: none;
-    font-size: 1.25em;
-    font-family: var(--font-heading);
-}
-
-.posts-list a:hover {
-    color: var(--accent-color);
-}
-
-.post-date {
-    display: block;
-    font-size: 0.9em;
-    color: rgba(255, 255, 255, 0.6);
-    margin-top: 4px;
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* ===== Footer ===== */
 footer {
     text-align: center;
-    padding: 40px;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.9em;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85em;
     position: relative;
     z-index: 5;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 40px;
 }
 
 /* ===== Mobile Responsive ===== */

@@ -1,18 +1,32 @@
+import { Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
+import { ErrorBoundary } from 'react-error-boundary'
+
+// Components
 import ThreeBackground from './components/ThreeBackground'
+import CustomCursor from './components/CustomCursor'
+import ErrorFallback from './components/ErrorFallback'
+import SEO from './components/SEO'
+import './index.css'
+
+// Direct imports (no lazy loading - site is small enough)
 import Home from './pages/Home'
 import Posts from './pages/Posts'
 import Newsletter from './pages/Newsletter'
 import Socials from './pages/Socials'
 import SonyPost from './pages/SonyPost'
-import './index.css'
+import NotFound from './pages/NotFound'
+import DynamicPost from './pages/DynamicPost'
+
+// Contact points to Socials
+const Contact = Socials
 
 function Navigation() {
     const location = useLocation()
 
     return (
-        <nav className="main-nav">
+        <nav className="main-nav" role="navigation" aria-label="Main navigation">
             <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
             <Link to="/posts" className={location.pathname === '/posts' ? 'active' : ''}>Posts</Link>
             <Link to="/newsletter" className={location.pathname === '/newsletter' ? 'active' : ''}>Newsletter</Link>
@@ -26,12 +40,50 @@ function AnimatedRoutes() {
     return (
         <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<Home />} />
-                <Route path="/posts" element={<Posts />} />
-                <Route path="/newsletter" element={<Newsletter />} />
-                <Route path="/socials" element={<Socials />} />
-                <Route path="/contact" element={<Socials />} />
-                <Route path="/sony-story" element={<SonyPost />} />
+                <Route path="/" element={
+                    <>
+                        <SEO title="Home" />
+                        <Home />
+                    </>
+                } />
+                <Route path="/posts" element={
+                    <>
+                        <SEO title="Posts" description="My archive of thoughts and stories." />
+                        <Posts />
+                    </>
+                } />
+                <Route path="/newsletter" element={
+                    <>
+                        <SEO title="Newsletter" description="Join the circle for updates." />
+                        <Newsletter />
+                    </>
+                } />
+                <Route path="/socials" element={
+                    <>
+                        <SEO title="Socials" description="Connect with me across the web." />
+                        <Socials />
+                    </>
+                } />
+                <Route path="/contact" element={
+                    <>
+                        <SEO title="Contact" />
+                        <Contact />
+                    </>
+                } />
+                <Route path="/sony-story" element={
+                    <>
+                        <SEO title="Sony: The Rise and Fall" description="A deep dive into Sony's history, the Walkman, and their quiet reinvention." />
+                        <SonyPost />
+                    </>
+                } />
+                {/* Dynamic CMS Route */}
+                <Route path="/posts/:slug" element={<DynamicPost />} />
+                <Route path="*" element={
+                    <>
+                        <SEO title="404 Not Found" />
+                        <NotFound />
+                    </>
+                } />
             </Routes>
         </AnimatePresence>
     )
@@ -62,25 +114,31 @@ function BrandHeader3D() {
 function App() {
     return (
         <Router>
-            {/* 3D Background - sits behind everything */}
-            <ThreeBackground />
+            {/* Skip to content link for keyboard users */}
+            <a href="#main-content" className="skip-link">Skip to main content</a>
 
-            {/* FIXED STICKY TITLE - 3D Mind-bending effect */}
-            <div className="sticky-brand-container">
-                <BrandHeader3D />
-            </div>
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
+                <CustomCursor />
+                {/* 3D Background - sits behind everything */}
+                <ThreeBackground />
 
-            {/* Main Content Container */}
-            <div className="app-container">
-                <div className="header-spacer"></div>
-                <Navigation />
-                <main>
-                    <AnimatedRoutes />
-                </main>
-                <footer>
-                    <p>&copy; {new Date().getFullYear()} Sahxiety. All rights reserved.</p>
-                </footer>
-            </div>
+                {/* FIXED STICKY TITLE - 3D Mind-bending effect */}
+                <div className="sticky-brand-container">
+                    <BrandHeader3D />
+                </div>
+
+                {/* Main Content Container */}
+                <div className="app-container">
+                    <div className="header-spacer"></div>
+                    <Navigation />
+                    <main id="main-content" tabIndex="-1">
+                        <AnimatedRoutes />
+                    </main>
+                    <footer>
+                        <p>&copy; {new Date().getFullYear()} Sahxiety. All rights reserved.</p>
+                    </footer>
+                </div>
+            </ErrorBoundary>
         </Router>
     )
 }
