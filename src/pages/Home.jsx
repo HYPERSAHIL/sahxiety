@@ -36,7 +36,7 @@ export default function Home() {
                 This is where I share what I'm working on, lessons from projects that went sideways, and random 2 AM thoughts about tech, creativity, and life in general.
             </p>
             <p>
-                New posts show up whenever I have something worth saying—usually weekly or monthly. No fancy writing, no pretending I have it all figured out. Just honest stuff from someone learning as they go.
+                New posts show up whenever I have something worth saying usually weekly or monthly. No fancy writing, no pretending I have it all figured out. Just honest stuff from someone learning as they go.
             </p>
             <p>
                 If that sounds like your vibe, stick around. I'm glad you're here.
